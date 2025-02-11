@@ -1,0 +1,113 @@
+Get Inscription Transactions#
+Query token inscription transaction details by transaction hash.
+
+Supports querying transaction details for Runes, BRC-20, SRC-20, ARC-20, and Ordinals NFT on the BTC chain.
+Supports querying transaction details for BRC-20 on the Fractal Bitcoin chain.
+Request Path#
+GET https://www.okx.com/api/v5/wallet/post-transaction/inscription-transaction-detail-by-txhash
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainIndex	String	Yes	Unique identifier for the chain
+txHash	String	Yes	Transaction hash
+protocol	String	Yes	Protocol Type
+1: BRC-20
+2: ARC-20
+3: Runes
+4: Ordinals NFT
+5:SRC-20
+If not specified, defaults to BRC-20
+cursor	String	No	Cursor
+limit	String	No	Number of entries to return, default is 20, maximum is 100
+Response Parameters#
+Parameter	Type	Description
+transactionDetails	Array	Transaction details
+>txStatus	String	Transaction status
+Success: success
+Fail: fail
+Pending transactions not supported
+>from	String	Sender(s), separated by commas for multisig addresses
+>to	String	Receiver(s), separated by commas for multisig addresses
+>eventType	String	Transaction type
+BRC-20: deploy, mint, inscribeTransfer, transfer
+Runes: Etch, Mintoutput, Burninput, Mint
+ARC-20: atomical-create-ft, ft-color-split, ft-color-regular, distributed-mint
+SRC-20: mint, transfer, deploy
+Ordinals NFT: mint, transfer
+>protocol	String	Protocol type
+1:BRC-20
+2:ARC-20
+3:Runes
+4:ordi_nft
+5: SRC-20
+>txHash	String	Transaction hash
+>blockHash	String	Block hash
+>height	String	Block height at which the transaction occurred
+>txTime	String	Transaction time; in Unix timestamp format (milliseconds), e.g., 1597026383085
+>amount	String	Transaction amount
+>symbol	String	Token name
+>tokenInscriptionId	String	Inscription token ID
+For Runes: returns Rune ID
+For BRC-20 tokens: returns the token's Inscription ID, the unique identifier for the token
+For ARC-20 tokens: returns the token's Atomical ID
+For other inscription tokens, this field returns empty
+>inscriptionNumber	String	Inscription number involved in each transaction
+>outputIndex	String	UTXO index corresponding to Runes token transfers, applicable only to Runes tokens
+cursor	String	Cursor
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/post-transaction/inscription-transaction-detail-by-txhash?chainIndex=0&limit=10&txHash=18ccb1bc8c931cf4253065c2a5612fed7bd0eabd0a34139485b34305bcfc2b18&protocol=2'
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+
+Response Example
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "cursor": "",
+            "transactionDetails": [
+                {
+                    "txHash": "18ccb1bc8c931cf4253065c2a5612fed7bd0eabd0a34139485b34305bcfc2b18",
+                    "blockHash": "00000000000000000000bcf4a44104b9cc54dc3a6e3b8a1007d73077e4fe224b",
+                    "height": "854743",
+                    "txTime": "1722394665000",
+                    "from": "",
+                    "to": "bc1pltwpza8fz00aqjf0s6z5pvhzrtwpj5nk75m5x7st7rqnq6tkqa2skhcs40",
+                    "amount": "1454",
+                    "symbol": "quark",
+                    "eventType": "ft-color-regular",
+                    "tokenInscriptionId": "9125f03bcf9325f6071762b9aee00b461a0b43ed157c336e2e89e07f47ea6f66i0",
+                    "protocol": "2",
+                    "txStatus": "success",
+                    "inscriptionId": "",
+                    "inscriptionNumber": "",
+                    "outputIndex": ""
+                },
+                {
+                    "txHash": "18ccb1bc8c931cf4253065c2a5612fed7bd0eabd0a34139485b34305bcfc2b18",
+                    "blockHash": "00000000000000000000bcf4a44104b9cc54dc3a6e3b8a1007d73077e4fe224b",
+                    "height": "854743",
+                    "txTime": "1722394665000",
+                    "from": "",
+                    "to": "bc1pm7fxkgcrqghf2rtxdw4hupvdpqkped7azyrh2mukedrw2p0cj3hsxt8ph3",
+                    "amount": "546",
+                    "symbol": "quark",
+                    "eventType": "ft-color-regular",
+                    "tokenInscriptionId": "9125f03bcf9325f6071762b9aee00b461a0b43ed157c336e2e89e07f47ea6f66i0",
+                    "protocol": "2",
+                    "txStatus": "success",
+                    "inscriptionId": "",
+                    "inscriptionNumber": "",
+                    "outputIndex": ""
+                }
+            ]
+        }
+    ]
+}

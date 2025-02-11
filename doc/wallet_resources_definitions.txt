@@ -1,0 +1,20 @@
+Definitions#
+Here we summarize some common parameters you will encounter when using Wallet API services. You can learn their definitions and usage scenarios.
+
+accountId#
+accountId is a unique identifier assigned by Wallet API to an account. Its function is to associate multiple chains and addresses for aggregated queries of assets and transaction history.
+
+chainIndex#
+chainIndex is the unique identifier for a blockchain within the Wallet API service. For chains following the EVM architecture and EIP-155 protocol, the standard chainIndex is used. For other chains like BTC and Solana that do not have a unified ID standard, we use the cointype parameter from the BIP44 specification as the chain identifier. In other special cases, we will ensure the uniqueness of the ID before assigning it. Example chainIndexes are as follows:
+
+Blockchain Network	chainIndex	eip155chainId
+Bitcoin Mainnet	0
+Ethereum Mainnet	1	1
+OP Mainnet	10	10
+ZKSpace	13
+Flare Mainnet	14	14
+Cronos Mainnet	25	25
+You can check here for a full list of supported blockchain networks and their chainIndexes.
+
+orderId#
+orderId is a unique identifier assigned to each transaction within the Wallet API system. Using orderId for queries ensures that even if a transaction is not on the blockchain, it is recorded within the system, ensuring full visibility of the transaction process.

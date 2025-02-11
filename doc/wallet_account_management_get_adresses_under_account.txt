@@ -1,0 +1,49 @@
+Get Addresses Under Account#
+Query the addresses bound under a specific account.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/account/account-detail
+
+Request Parameters#
+Parameter	Type	Required	Description
+accountId	String	Yes	Unique identifier of the account
+chainIndex	String	No	Unique identifier of the chain
+limit	String	No	Number of items to query each time, default is 50, maximum is 100
+cursor	String	No	Cursor position, defaults to the first one
+Response Parameters#
+Parameter	Type	Description
+cursor	String	Cursor
+addresses	Array	Address list
+>chainIndex	String	Unique identifier of the chain
+>address	String	Address
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/account/account-detail?accountId=44486e05-3235-2f8e-5fe2-a8ab46217863' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+Response Example#
+200
+{
+    "code": "0",
+    "data": [
+        {
+            "cursur": "50",
+            "addresses": [
+                {
+                    "chainIndex": "1",
+                    "address":"0xdf54b6c6195ea4d948d03bfd818d365cf175cfc2"
+                },
+                {
+                    "chainIndex": "3",
+                    "address":"0x04ad62387d1f1c7034087bbe4d16163d06fae42d"
+                }
+            ]
+        }
+    ]，
+    "msg": "success"
+}

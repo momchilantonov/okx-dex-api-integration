@@ -1,0 +1,407 @@
+Go Signing SDK#
+Overview#
+Go-wallet-sdk is a wallet solution based on Go language that includes various public chains' different cryptographic algorithms and common functionalities. You can use it for creating private keys, addresses, assembling transactions, and performing signatures, among other things. This document will provide a detailed guide on how to use this SDK. Currently, it supports various mainstream blockchains, with each token format having its own independent module implementation. We will continue to add support for more blockchains in the future.
+
+Supported platforms#
+As a Go SDK, it can be easily integrated into Web applications, mobile applications, or desktop applications.
+
+Installation and building#
+Go GET#
+To use the Signing SDK, you first need to install it. You can use go get to get the latest version.
+
+Our Signing SDK supports two types of packages: public packages and single coin modules.
+
+Public packages are for all currencies:
+
+go get -u github.com/okx/go-wallet-sdk/crypto
+Integration of individual currencies, taking ETH and BTC as examples:
+
+Integration of ETH:
+
+go get -u github.com/okx/go-wallet-sdk/coins/ethereum
+Integration of BTC:
+
+go get -u github.com/okx/go-wallet-sdk/coins/bitcoin
+Main features#
+Here is a specific introduction to the functions of each module in the Signing SDK.
+
+crypto: This module provides commonly used security encryption algorithms and signature algorithms, etc.
+coins: This module implements methods for building and signing transactions for each coin. Each coin has a corresponding module, such as ethereum, bitcoin, etc. These modules provide transaction building and signing methods for specific coins.
+Packages#
+Package name	Module	Description
+github.com/okx/go-wallet-sdk/crypto
+crypto	We provide common functions about bip32, bip39, ecdsa, ed25519, etc.
+github.com/okx/go-wallet-sdk/coins/aptos
+aptos	Aptos SDK is used to interact with the Aptos blockchain, containing various functions that can be used for web3 wallets.
+github.com/okx/go-wallet-sdk/coins/bitcoin
+bitcoin	Bitcoin SDK is used to interact with the Bitcoin mainnet or testnet, containing various functions that can be used for web3 wallets. The SDK not only supports Bitcoin, but also supports the following chains: BTC, BSV, DOGE, LTC, TBTC.
+github.com/okx/go-wallet-sdk/coins/cosmos
+cosmos	Cosmos SDK is used to interact with the Cosmos blockchain, containing various functions that can be used for web3 wallets.
+github.com/okx/go-wallet-sdk/coins/eos
+eos	EOS SDK is used to interact with the EOS blockchain, containing various functions that can be used for web3 wallets. The SDK not only supports EOS, but also supports WAX.
+github.com/okx/go-wallet-sdk/coins/ethereum
+ethereum	Ethereum SDK is used to interact with the Ethereum blockchain or Evm blockchain, containing various functions that can be used for web3 wallets.
+github.com/okx/go-wallet-sdk/coins/flow
+flow	Flow SDK is used to interact with the Flow blockchain, containing various functions that can be used for web3 wallets.
+github.com/okx/go-wallet-sdk/coins/near
+near	Near SDK is used to interact with the Near Protocol, containing the main functions needed when interacting with the Near ecosystem.
+github.com/okx/go-wallet-sdk/coins/polkadot
+polkadot	Polkadot SDK is used to interact with the Polkadot blockchain, containing the main functions needed when interacting with the Polkadot ecosystem.
+github.com/okx/go-wallet-sdk/coins/solana
+solana	Solana SDK is used to interact with the Solana chain, containing the main functions needed when interacting with the Solana ecosystem.
+github.com/okx/go-wallet-sdk/coins/stacks
+stacks	Stacks SDK is used to interact with the Stacks blockchain, containing various functions that can be used for web3 wallets.
+github.com/okx/go-wallet-sdk/coins/starknet
+starknet	Starknet SDK is used to interact with the Starknet blockchain, containing various functions that can be used for web3 wallets.
+github.com/okx/go-wallet-sdk/coins/sui
+sui	SUI SDK is used to interact with the SUI blockchain, containing various functions that can be used for web3 wallets.
+github.com/okx/go-wallet-sdk/coins/tron
+tron	TRX SDK is used to interact with the TRON blockchain, containing various functions that can be used for web3 wallets.
+github.com/okx/go-wallet-sdk/coins/zkspace
+zkspace	ZKSpace SDK is used to interact with ZK contracts, containing various functions that can be used for web3 wallets. The SDK not only supports ZKSpace, but also supports zkSync.
+crypto#
+This is a library that includes implementations of commonly used security encryption and signature algorithms such as BIP32, BIP39, ECDSA, ED25519, etc. For example:
+
+Common BIP32 functions: These functions are mainly used to handle and operate tasks related to the Bitcoin Improvement Payment Protocol (BIP32).
+BIP39 mnemonic generation, public/private key, and message signing functions: These functions are mainly used to handle and operate tasks related to the Bitcoin Improvement Payment Protocol (BIP39), such as generating mnemonics, public/private keys, and signing messages.
+Common hash and encoding/decoding functions: These functions are mainly used to handle common hash and encoding/decoding tasks, such as SHA256 hashing, Base64 encoding/decoding, etc.
+Common ED25519 signature functions: These functions are mainly used to handle and operate tasks related to the ED25519 signature algorithm.
+Common ECDSA signature functions: These functions are mainly used to handle and operate tasks related to the Elliptic Curve Digital Signature Algorithm (ECDSA).
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/crypto
+aptos-sdk#
+Aptos SDK is mainly used to integrate Aptos blockchain, containing functions such as private key generation, private key derivation, address generation, and transaction transfer.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/aptos
+Supported functions:
+
+Function name	Functionality
+NewAddress	Generate a new address from a private key
+ValidateAddress	Validate an address
+SignRawTransaction	Sign a transaction
+Aptos transaction support types are:
+
+"transfer", "tokenTransfer", "tokenMint", "tokenBurn", "tokenRegister", "dapp", "simulate", "offerNft", "claimNft", "offerNft_simulate", "claimNft_simulate"
+
+For more detailed information about the functions supported by the aptos-sdk package and use cases, you can view the github document for more detailed content: coin-aptos function functions
+.
+
+bitcoin-sdk#
+coin-bitcoin is an SDK for integrating the Bitcoin blockchain. It supports both the Bitcoin mainnet and testnet, and provides a series of functional methods, making it easier for developers to interact with the Bitcoin blockchain. In addition to BTC, it also supports other cryptocurrencies such as BSV, DOGE, LTC, and TBTC.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/bitcoin
+Supported functions:
+
+Function name	Functionality
+NewAddress	Get a new address through a private key
+SignTx	Sign a transaction
+GenerateUnsignedPSBTHex	Generate a PSBT transaction
+For more detailed information about the functions supported by the bitcoin-sdk package and use cases, you can view the github document for more detailed content: coin-bitcoin function functions
+.
+
+cosmos-sdk#
+Cosmos SDK is a toolkit for integrating with the Cosmos blockchain, providing a series of functional methods, including generating private keys, deriving private keys, generating addresses, and transferring transactions. It supports currencies including:
+
+Atom
+Axelar
+Cronos
+Evmos
+Iris
+Juno
+Kava
+Kujira
+Osmos
+Secret
+Sei
+Stargaze
+Terra
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/cosmos
+Supported functions:
+
+Function name	Functionality
+NewAddress	Get a new address through a private key
+Transfer	Sign a transaction
+SignMessage	Sign a message
+For more detailed information about the functions supported by the cosmos-sdk package and use cases, you can view the github document for more detailed content: coin-cosmos function functions
+.
+
+eos-sdk#
+EOS SDK is a toolkit for integrating with the EOS blockchain. It provides a series of functional methods, including generating private keys, deriving private keys, generating addresses, and transaction serialization. In addition to EOS, it also supports the Wax coin.
+
+These functional methods make it easier for developers to interact with the EOS blockchain, including creating and managing wallets, sending and receiving transactions, and querying blockchain information.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/eos
+Supported functions:
+
+Function name	Functionality
+NewAddress	Get a new address through a private key
+SignTransaction	Sign a transaction
+For more detailed information about the functions supported by the eos-sdk package and use cases, you can view the github document for more detailed content: coin-eos function functions
+.
+
+ethereum-sdk#
+Ethereum SDK is a toolkit for integrating with the Ethereum blockchain and other blockchains that support EVM (Ethereum Virtual Machine). It provides a series of functional methods, including generating private keys, deriving private keys, generating addresses, and transferring transactions.
+
+These functional methods make it easier for developers to interact with the Ethereum blockchain, including creating and managing wallets, sending and receiving transactions, and querying blockchain information.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/ethereum
+Supported functions:
+
+Function name	Functionality
+NewAddress	Get a new address through a private key
+SignTransaction	Sign a transaction
+SignMessage	Sign a message
+For more detailed information about the functions supported by the coin-ethereum package and use cases, you can view the github document for more detailed content: coin-ethereum function functions
+.
+
+flow-sdk#
+Flow blockchain is a next-generation, future-oriented blockchain platform, specifically designed for high-performance applications and games.
+
+Flow SDK is a toolkit for integrating with the Flow blockchain. It provides a series of functional methods, enabling developers to interact more conveniently with the Flow blockchain. The specific functionalities offered by the SDK can facilitate the development of applications on the Flow blockchain.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/flow
+Supported functions:
+
+Function name	Functionality
+CreateNewAccountTx	Create a new account
+SignTx	Sign a transaction
+Flow supports two types of transactions: Account and Transfer.
+
+For more detailed information about the functions supported by the coin-flow package and use cases, you can view the github document for more detailed content: coin-flow function functions
+.
+
+near-sdk#
+Near Protocol is a scalable blockchain platform that achieves high throughput and low latency transaction processing by using a novel consensus mechanism and sharding technology. Near SDK allows developers to interact more conveniently with the Near blockchain.
+
+Near SDK is a toolkit for integrating with the Near Protocol, containing the main functions needed when interacting with the Near ecosystem.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/near
+Supported functions:
+
+Function name	Functionality
+NewAccount	Get an address through a seed
+SignTransaction	Sign a transaction
+Transfer	Transfer a coin
+FullAccessKey	Get a full access key
+PublicKeyFromSeed	Get a public key from a seed
+For more detailed information about the functions supported by the near-sdk package and use cases, you can view the github document for more detailed content: coin-near function functions
+.
+
+polkadot-sdk#
+Polkadot is a multi-chain heterogeneous blockchain platform, which allows various blockchain networks to run in parallel with a shared security model, and can also realize seamless transfer of information and value between chains.
+
+Polkadot SDK is a toolkit for integrating with the Polkadot blockchain, containing the main functions needed when interacting with the Polkadot ecosystem.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/polkadot
+Supported functions:
+
+Function name	Functionality
+NewAddress	Get an address through a seed
+SignTx	Sign a transaction
+For more detailed information about the functions supported by the polkadot-sdk package and use cases, you can view the github document for more detailed content: coin-polkadot function functions
+.
+
+solana-sdk#
+Solana is a high-performance blockchain platform that achieves high throughput and low latency transaction processing through an innovative consensus algorithm and block generation mechanism.
+
+Solana SDK is a toolkit for integrating the Solana blockchain, containing the main functions needed when interacting with the Solana ecosystem.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/solana
+Supported functions:
+
+Function name	Functionality
+NewAddress	Get a new address through a private key
+SignTransaction	Sign a transaction
+For more detailed information about the functions supported by the solana-sdk package and use cases, you can view the github document for more detailed content: coin-solana function functions
+.
+
+stacks-sdk#
+Stacks is an open-source blockchain platform that allows developers to build smart contracts and decentralized applications on the Stacks blockchain.
+
+Stacks SDK is mainly used to integrate Stacks blockchain, containing various functions that can be used for web3 wallets.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/stacks
+Supported functions:
+
+Function name	Functionality
+NewAddress	Get a new address through a private key
+Transfer	Sign a transaction
+For more detailed information about the functions supported by the stacks-sdk package and use cases, you can view the github document for more detailed content: coin-stacks function functions
+.
+
+starknet-sdk#
+StarkNet is a decentralized, scalable blockchain network that uses zero-knowledge proof technology to enhance the efficiency and security of transaction processing.
+
+StarkNet SDK is a toolkit for integrating the StarkNet blockchain, providing a series of functional methods that make it easier for developers to interact with the StarkNet blockchain.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/starknet
+Supported functions:
+
+Function name	Functionality
+NewAddress	Get a new address through a private key
+CreateSignedContractTx	Sign a transaction
+For more detailed information about the functions supported by the starknet-sdk package and use cases, you can view the github document for more detailed content: coin-starknet function functions
+.
+
+sui-sdk#
+SUI SDK is a toolkit for integrating the SUI blockchain, containing various functions that can be used for web3 wallets.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/sui
+Supported functions:
+
+Function name	Functionality
+NewAddress	Get a new address through a private key
+SignTransaction	Sign a transaction
+SignMessage	Sign a message
+Note
+Note: Unlike SECP256K1, ED25519 only supports hard mode derivation for private keys. For more details, refer to: https://github.com/satoshilabs/slips/blob/master/slip-0010.md
+For more detailed information about the functions supported by the sui-sdk package and use cases, you can view the github document for more detailed content: coin-sui function functions
+.
+
+tron-sdk#
+TRON SDK is a toolkit for integrating the TRON blockchain, containing various functions that can be used for web3 wallets.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/tron
+Supported functions:
+
+Function name	Functionality
+NewAddress	Get a new address through a private key
+SignTransaction	Sign a transaction
+For more detailed information about the functions supported by the tron-sdk package and use cases, you can view the github document for more detailed content: coin-tron function functions
+.
+
+zkspace-sdk#
+ZKSpace SDK is mainly used to integrate ZK contracts, containing various functions that can be used for web3 wallets. In addition to ZKSpace, it also supports zkSync.
+
+To get the latest version of the package via go get:
+
+go get -u github.com/okx/go-wallet-sdk/coins/zkspace
+Supported functions:
+
+Function name	Functionality
+NewAddress	Get a new address through a private key
+CreateSignTransferTx	Sign a transaction
+The transaction signature supports data types including: transfer and changePubkey.
+
+For more detailed information about the functions supported by the coin-zkspace package and use cases, you can view the github document for more detailed content: coin-zkspace function functions
+.
+
+Test Cases#
+On GitHub, each module has a corresponding tests directory under its package. This directory contains test cases for various coin modules. You can learn more about the usage of functions in the SDK through these test cases.
+
+Coin Family	Test Case
+BTC	Test Case
+ETH	Test Case
+Cosmos	Test Case
+Aptos	Test Case
+EOS	Test Case
+Solana	Test Case
+Stacks	Test Case
+Starknet	Test Case
+SUI	Test Case
+TRON	Test Case
+Zkspace	Test Case
+Flow	Test Case
+Near	Test Case
+Polkadot	Test Case
+Supported Coins#
+Coin Family	Coin	Derivation Path
+BTC	BTC	Regular address:
+m/44'/0'/0/0'/0
+SegWit:
+m/49'/0'/0/0'/0
+m/84'/0'/0/0'/0
+m/86'/0'/0/0'/0
+BTC	BCH	m/44'/145'/0'/0/0
+BTC	BSV	m/44'/236'/0'/0/0
+BTC	LTC	m/44'/2'/0'/0/0
+BTC	Doge	m/44'/3'/0'/0/0
+BTC	TBTC	m/44'/0'/0/0'/0
+BTC	Omni USDT	m/44'/0'/0/0'/0
+ETH	ETH	m/44'/60'/0'/0/0
+ETH	Arbitrum One	m/44'/60'/0'/0/0
+ETH	Arbitrum Nova	m/44'/60'/0'/0/0
+ETH	Avalanche C	m/44'/60'/0'/0/0
+ETH	Boba	m/44'/60'/0'/0/0
+ETH	BNB Chain	m/44'/60'/0'/0/0
+ETH	Base	m/44'/60'/0'/0/0
+ETH	Core	m/44'/60'/0'/0/0
+ETH	Cronos(EVM)	m/44'/60'/0'/0/0
+ETH	Celo	m/44'/60'/0'/0/0
+ETH	Conflux(EVM)	m/44'/60'/0'/0/0
+ETH	Endurance	m/44'/60'/0'/0/0
+ETH	EthereumPoW	m/44'/60'/0'/0/0
+ETH	EthereumFair	m/44'/60'/0'/0/0
+ETH	Filecoin EVM	m/44'/60'/0'/0/0
+ETH	Fantom	m/44'/60'/0'/0/0
+ETH	Flare	m/44'/60'/0'/0/0
+ETH	Gnosis	m/44'/60'/0'/0/0
+ETH	Goerli	m/44'/60'/0'/0/0
+ETH	HAQQ Network	m/44'/60'/0'/0/0
+ETH	Klaytn	m/44'/60'/0'/0/0
+ETH	KCC	m/44'/60'/0'/0/0
+ETH	Kava EVM	m/44'/60'/0'/0/0
+ETH	Linea	m/44'/60'/0'/0/0
+ETH	Metis	m/44'/60'/0'/0/0
+ETH	Moonebeam	m/44'/60'/0'/0/0
+ETH	Moonriver	m/44'/60'/0'/0/0
+ETH	Mantle	m/44'/60'/0'/0/0
+ETH	Omega Network	m/44'/60'/0'/0/0
+ETH	OKTC	m/44'/60'/0'/0/0
+ETH	Optimism	m/44'/60'/0'/0/0
+ETH	opBNB	m/44'/60'/0'/0/0
+ETH	Polygon	m/44'/60'/0'/0/0
+ETH	Polygon zkEVM	m/44'/60'/0'/0/0
+ETH	PulseChain	m/44'/60'/0'/0/0
+ETH	Sepolia	m/44'/60'/0'/0/0
+ETH	zkSync Era	m/44'/60'/0'/0/0
+ETH	ZetaChian	m/44'/60'/0'/0/0
+Cosmos	Atom	m/44'/118'/0'/0/0
+Cosmos	Axelar	m/44'/118'/0'/0/0
+Cosmos	Cronos	m/44'/394'/0'/0/0
+Cosmos	Osmos	m/44'/118'/0'/0/0
+Cosmos	Evmos	m/44'/60'/0'/0/0
+Cosmos	Iris	m/44'/118'/0'/0/0
+Cosmos	Juno	m/44'/118'/0'/0/0
+Cosmos	Kava	m/44'/459'/0'/0/0
+Cosmos	Kujira	m/44'/118'/0'/0/0
+Cosmos	Secret	m/44'/529'/0'/0/0
+Cosmos	Sei	m/44'/118'/0'/0/0
+Cosmos	Stargaze	m/44'/118'/0'/0/0
+Cosmos	Terra	m/44'/330'/0'/0/0
+Aptos	Aptos	m/44'/637'/0'/0/0
+EOS	EOS	m/44'/194'/0'/0/0
+Solana	Solana	m/44'/501'/0'/0/0
+Stacks	Stacks	m/44'/5757'/0'/0/0
+ETH Layer 2	Starknet	m/44'/9004'/0'/0/0
+SUI	SUI	m/44'/784'/0'/0/0
+TRX	TRON	m/44'/195'/0'/0/0
+ETH Layer 2	ZKSpace	m/44'/60'/0'/0/0
+ETH Layer 2	zkSync	m/44'/60'/0'/0/0

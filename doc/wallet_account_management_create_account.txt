@@ -1,0 +1,48 @@
+Create Account#
+Bind multiple addresses to create a wallet account. The supported chains return all tokens by default, and it allows aggregated queries for asset and transaction history.
+
+Note
+The number of addresses that can be aggregated in a wallet account has an upper limit, which is based on the number of chains we support.
+Request Path#
+POST https://www.okx.com/api/v5/wallet/account/create-wallet-account
+
+Request Parameters#
+Parameter	Type	Required	Description
+addresses	Array	Yes	List of addresses. (Maximum 50 addresses per call, for subsequent additions, use Update Account)
+>chainIndex	String	Yes	Unique identifier of the chain
+>address	String	Yes	Address
+Response Parameters#
+Parameter	Type	Description
+accountId	String	Unique identifier of the wallet account
+
+Request Example#
+shell
+curl --location --request POST 'https://www.okx.com/api/v5/wallet/account/create-wallet-account' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z' \
+--data-raw '{
+    "addresses": [
+        {
+            "chainIndex":"1",
+            "address":"0x561815e02bac6128bbbbc551005ddfd92a5c24db"
+        },{
+            "chainIndex":"0",
+            "address":"bc1p939endmmt6pvz7ukeywpfsazz57cc4vdu3d0qerz6crhgrtmerfssls5wy"
+        }
+    ]
+}'
+
+Response Example
+{
+    "code": "0",
+    "data": [
+        {
+            "accountId": "13886e05-1265-4b79-8ac3-b7ab46217655"
+        }
+    ],
+    "msg": "success"
+}

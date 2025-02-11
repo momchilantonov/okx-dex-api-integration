@@ -1,0 +1,90 @@
+Specific Token Balance#
+Query the balance of certain specific tokens under a wallet account.
+
+Request Path#
+POST https://www.okx.com/api/v5/wallet/asset/token-balances
+
+Request Parameters#
+Parameter	Type	Required	Description
+accountId	String	Yes	Unique identifier for the account
+tokenAddresses	Array	Yes	List of tokens. Maximum list size is 20
+>chainIndex	String	Yes	Unique identifier for the chain
+>tokenAddress	String	Yes	Token address.
+1: Pass an empty string "" to query the native token of the corresponding chain.
+2: Pass the specific token contract address to query the corresponding token.
+3: Different inscription tokens are passed in the following formats:
+FBRC-20: Use fbtc_fbrc20_name, such as fbtc_fbrc20_babymusk
+BRC-20: Use btc-brc20-tick(name), such as btc-brc20-ordi
+Runes: Use btc-runesMain-tickId, such as btc-runesMain-840000:2
+SRC-20: Use btc-src20-name, such as btc-src20-utxo
+Response Parameters#
+Parameter	Type	Description
+tokenAssets	Array	List for token balances
+>chainIndex	String	Unique identifier for the chain
+>tokenAddress	String	Token address.If the return is an empty string "", it means the query is for the native token of the corresponding blockchain.
+>symbol	String	Token symbol
+>balance	String	Token balance
+>rawBalance	String	Raw balance of token address. More chains will be supported soon. For unsupported chains, this field is empty.
+>tokenPrice	String	Token price in USD
+>tokenType	String	Token type:
+1: token
+2: inscription
+>isRiskToken	Boolean	true: flagged as a risk airdrop token
+false: not flagged
+
+
+Request Example#
+shell
+curl --location --request POST 'https://www.okx.com/api/v5/wallet/asset/token-balances' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z' \
+--data-raw '{
+    "accountId": "4686531e-3adb-469a-8000-8fd1c2097f68",
+    "tokenAddresses": [
+        {
+            "chainIndex": "1",
+            "tokenAddress": ""
+        },
+        {
+            "chainIndex": "0",
+            "tokenAddress": "btc-brc20-psat"
+        }
+    ]
+}'
+
+
+Response Example
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "tokenAssets": [
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "",
+                    "symbol": "ETH",
+                    "balance": "0.07210371955388872",
+                    "rawBalance": "",
+                    "tokenPrice": "2650.43",
+                    "tokenType": "1",
+                    "isRistToken": false
+                },
+                {
+                    "chainIndex": "0",
+                    "tokenAddress": "btc-brc20-psat",
+                    "symbol": "psat",
+                    "balance": "1",
+                    "rawBalance": "",
+                    "tokenPrice": "140",
+                    "tokenType": "2",
+                    "isRiskToken": false
+                }
+            ]
+        }
+    ]
+}

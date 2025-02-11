@@ -1,0 +1,42 @@
+Approve transactions#
+According to the ERC-20 standard
+, we need to make sure that the OKX router has permission to spend funds with the user's wallet before making a transaction. This API will generate the relevant data for calling the contract.
+
+Request address#
+GET https://www.okx.com/api/v5/dex/aggregator/approve-transaction
+
+Request param#
+Parameter	Type	Required	Description
+chainId	String	Yes	Chain ID (e.g., 1 for Ethereum. See Chain IDs)
+tokenContractAddress	String	Yes	Token contract address (e.g., 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)
+approveAmount	String	Yes	The amount of token that needs to be permitted (set in minimal divisible units, e.g., 1.00 USDT set as 1000000, 1.00 DAI set as 1000000000000000000)
+Response param#
+Parameter	Type	Description
+data	String	Call data
+dexContractAddress	String	The contract address of OKX DEX approve (e.g., 0x6f9ffea7370310cd0f890dfde5e0e061059dcfd9)
+gasLimit	String	Gas limit (e.g., 50000)
+gasPrice	String	Gas price in wei (e.g., 110000000)
+
+
+Request example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/dex/aggregator/approve-transaction?chainId=1&tokenContractAddress=0x6f9ffea7370310cd0f890dfde5e0e061059dcfd9&approveAmount=1000000' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+Response example#
+200
+{
+ "code": "0",
+ "data": [
+   {
+     "data": "0x095ea7b3000000000000000000000000c67879f4065d3b9fe1c09ee990b891aa8e3a4c2f00000000000000000000000000000000000000000000000000000000000f4240",
+     "dexContractAddress": "0xc67879F4065d3B9fe1C09EE990B891Aa8E3a4c2f",
+     "gasLimit": "50000",
+     "gasPrice": "110000000"
+   }
+ ],
+ "msg": ""
+}

@@ -1,0 +1,228 @@
+REST API authentication#
+Initiate a request#
+All REST private request headers must contain the following:
+
+OK-ACCESS-KEY string APIKey（follow [this guide]）(./introduction-to-developer-portal-interface#generate-api-keys) to generate an API key
+OK-ACCESS-SIGN uses the HMAC SHA256 hash function to get the hash value, then uses Base-64 encoding (see signature)
+OK-ACCESS-TIMESTAMP specifies the time (UTC) when the request is initiated, for example, 2020-12-08T09:08:57.715Z
+OK-ACCESS-PASSPHRASE represents the Passphrase you specified when creating the API key
+Some endpoints, require additional headers:
+
+OK-ACCESS-PROJECT The project ID of your project (found under Project Details)
+All requests should have content of type 'application/json' and be valid JSON.
+
+Signature#
+OK-ACCESS-SIGNrequest header：
+
+is a combination of timestamp + method + requestPath + body strings (+ indicates string connection) and SecretKey, which is encrypted using the HMAC SHA256 method and output through Base-64 encoding.
+Prepare the Secret Key (generated when the API key is created).
+Use HMAC SHA256 to sign the pre-hash string with a key.
+Encodes the signature in Base64 format.
+Example: sign=CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(timestamp + 'GET' + '/api/v5/account/balance?ccy=BTC', SecretKey))
+
+The value of 'timestamp' is the same as the request header of 'OK-ACCESS-TIMESTAMP' and is in ISO format
+For example：2020-12-08T09:08:57.715Z
+method indicates the request method. All letters are uppercase
+For example：GET/POST
+requestPath specifies the request interface path
+For example：/api/v5/account/balance
+body is the string that requests the body. If the request does not have a body (usually a GET request), the body can be omitted
+For example：{"instId":"BTC-USDT","lever":"5","mgnMode":"isolated"}
+GETthe request parameter is counted as requestPath, not body
+Postman example#
+Postman is a popular API development and testing tool that allows developers to design, test, and document APIs. It provides a user-friendly graphical interface for making HTTP requests to APIs.
+
+If you have not installed Postman, you can download it for free from the Postman website: https://www.postman.com/
+
+Note
+This example requires you to have a basic understanding of Postman.
+Add parameters#
+This typically applies to GET requests.
+If your request requires query parameters, you can add them under the Params tab. Here, you can add key-value pairs for your query parameters.
+img
+
+Set headers#
+Under the Headers tab, add the following key-value pairs:
+
+OK-ACCESS-KEY
+OK-ACCESS-PASSPHRASE
+OK-ACCESS-PROJECT (if required)
+img
+
+Add body#
+This typically applies to POST requests.
+If your request requires a request body, you can add them under the Body tab.
+Select raw and JSON under the dropdown menu.
+Input your request body in JSON format.
+img
+
+Set pre-request script#
+This is used to generate the necessary signature (OK-ACCESS-SIGN) and timestamp (OK-ACCESS-TIMESTAMP)
+Under the Pre-request Script tab, insert the script which corresponds to the request type.
+Exclude the request body when generating the prehash string for GET requests.
+Edit the secret key accordingly.
+GET requests:
+
+var method = pm.request.method;
+var now = new Date();
+var isoString = now.toISOString();
+var path = pm.request.url.getPathWithQuery();
+var sign=CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(isoString + method + path, pm.variables.replaceIn('{{secret_key}}')));
+
+pm.request.headers.add({
+    key: 'OK-ACCESS-SIGN',
+    value: sign
+});
+
+pm.request.headers.add({
+    key: 'OK-ACCESS-TIMESTAMP',
+    value: isoString
+});
+POST requests:
+
+var method = pm.request.method;
+var now = new Date();
+var isoString = now.toISOString();
+var path = pm.request.url.getPathWithQuery();
+var bodyStr = pm.request.body.raw;
+var sign=CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(isoString + method + path + bodyStr, pm.variables.replaceIn('{{secret_key}}')))
+
+pm.request.headers.add({
+    key: 'OK-ACCESS-SIGN',
+    value: sign
+});
+
+pm.request.headers.add({
+    key: 'OK-ACCESS-TIMESTAMP',
+    value: isoString
+});
+Javascript example#
+To invoke the API through a Javascript script, refer to the following code example:
+
+const https = require('https');
+const crypto = require('crypto');
+const querystring = require('querystring');
+
+// Define API credentials and project ids
+const api_config = {
+  "api_key": '',
+  "secret_key": '',
+  "passphrase": '',
+  "project": '' // This applies only to onchainOS APIs
+};
+
+function preHash(timestamp, method, request_path, params) {
+  // Create a pre-signature based on strings and parameters
+  let query_string = '';
+  if (method === 'GET' && params) {
+    query_string = '?' + querystring.stringify(params);
+  }
+  if (method === 'POST' && params) {
+    query_string = JSON.stringify(params);
+  }
+  return timestamp + method + request_path + query_string;
+}
+
+function sign(message, secret_key) {
+  // Use HMAC-SHA256 to sign the pre-signed string
+  const hmac = crypto.createHmac('sha256', secret_key);
+  hmac.update(message);
+  return hmac.digest('base64');
+}
+
+function createSignature(method, request_path, params) {
+  // Get the timestamp in ISO 8601 format
+  const timestamp = new Date().toISOString().slice(0, -5) + 'Z';
+  // Generate a signature
+  const message = preHash(timestamp, method, request_path, params);
+  const signature = sign(message, api_config['secret_key']);
+  return { signature, timestamp };
+}
+
+function sendGetRequest(request_path, params) {
+  // Generate a signature
+  const { signature, timestamp } = createSignature("GET", request_path, params);
+
+  // Generate the request header
+  const headers = {
+    'OK-ACCESS-KEY': api_config['api_key'],
+    'OK-ACCESS-SIGN': signature,
+    'OK-ACCESS-TIMESTAMP': timestamp,
+    'OK-ACCESS-PASSPHRASE': api_config['passphrase'],
+    'OK-ACCESS-PROJECT': api_config['project'] // This applies only to WaaS APIs
+  };
+
+  const options = {
+    hostname: 'www.okx.com',
+    path: request_path + (params ? `?${querystring.stringify(params)}` : ''),
+    method: 'GET',
+    headers: headers
+  };
+
+  const req = https.request(options, (res) => {
+    let data = '';
+    res.on('data', (chunk) => {
+      data += chunk;
+    });
+    res.on('end', () => {
+      console.log(data);
+    });
+  });
+
+  req.end();
+}
+
+function sendPostRequest(request_path, params) {
+  // Generate a signature
+  const { signature, timestamp } = createSignature("POST", request_path, params);
+
+  // Generate the request header
+  const headers = {
+    'OK-ACCESS-KEY': api_config['api_key'],
+    'OK-ACCESS-SIGN': signature,
+    'OK-ACCESS-TIMESTAMP': timestamp,
+    'OK-ACCESS-PASSPHRASE': api_config['passphrase'],
+    'OK-ACCESS-PROJECT': api_config['project'], // This applies only to WaaS APIs
+    'Content-Type': 'application/json' // POST requests need this header
+  };
+
+  const options = {
+    hostname: 'www.okx.com',
+    path: request_path,
+    method: 'POST',
+    headers: headers
+  };
+
+  const req = https.request(options, (res) => {
+    let data = '';
+    res.on('data', (chunk) => {
+      data += chunk;
+    });
+    res.on('end', () => {
+      console.log(data);
+    });
+  });
+
+  if (params) {
+    req.write(JSON.stringify(params));
+  }
+
+  req.end();
+}
+
+// GET request example
+const getRequestPath = '/api/v5/dex/aggregator/quote';
+const getParams = {
+  'chainId': 42161,
+  'amount': 1000000000000,
+  'toTokenAddress': '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+  'fromTokenAddress': '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1'
+};
+sendGetRequest(getRequestPath, getParams);
+
+// POST request example
+const postRequestPath = '/api/v5/mktplace/nft/ordinals/listings';
+const postParams = {
+  'slug': 'sats'
+};
+sendPostRequest(postRequestPath, postParams);

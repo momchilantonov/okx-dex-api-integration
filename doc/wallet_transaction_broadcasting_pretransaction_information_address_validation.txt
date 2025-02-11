@@ -1,0 +1,42 @@
+Address Validation#
+Provide an address to determine if it is a valid user or contract address, and whether it has hit blacklist check.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/pre-transaction/validate-address
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainIndex	String	Yes	Unique identifier for the chain
+address	String	Yes	Address
+Response Parameters#
+Parameter	Type	Description
+addressType	String	0: Invalid address format
+1: Valid user address
+2: Valid contract address
+hitBlacklist	Boolean	false: Did not hit a blacklisted address
+true: Hit a blacklisted address
+tag	String	Types of blacklist tags. Deprecated
+
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/validate-address?chainIndex=1&address=0xdf54b6c6195ea4d948d03bfd818d365cf175cfc2&addressType=0' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+Response Example#
+200
+{
+    "code": "0",
+    "data": [
+        {
+            "addressType": "1"
+            "hitBlacklist":"true"
+            "tag":"HoneyPot"
+        }
+    ],
+    "msg": "success"
+}

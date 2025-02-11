@@ -1,0 +1,192 @@
+Get Specific Transaction#
+Retrieve details of a transaction based on txHash. The Wallet API decomposes a transaction and its internal transactions into sub-transactions based on asset type:
+0: Outer layer mainnet coin transfer
+1: Inner layer mainnet coin transfer in a contract
+2: Token transfer
+
+Note
+The Wallet API decomposes a transaction into sub-transactions based on asset type. For EVM transactions, different sub-transaction types include:
+0: Outer layer mainnet coin transfer
+1: Inner layer mainnet coin transfer in a contract
+2: Token transfer
+Request Path#
+GET https://www.okx.com/api/v5/wallet/post-transaction/transaction-detail-by-txhash
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainIndex	String	Yes	Unique identifier for the chain
+txHash	String	Yes	Transaction hash
+iType	String	No	Layer type for EVM transactions
+0: Outer layer mainnet coin transfer
+1: Inner layer mainnet coin transfer
+2: Token transfer
+Response Parameters#
+Parameter	Type	Description
+chainIndex	String	Unique identifier for the chain
+height	String	Block height where the transaction occurred
+txTime	String	Transaction time; Unix timestamp in milliseconds
+txhash	String	Transaction hash
+txStatus	String	Transaction status:
+1: pending
+2: success
+3: fail
+gasLimit	String	Gas limit
+gasUsed	String	Gas used
+gasPrice	String	Gas price
+txFee	String	Transaction fee.
+nonce	String	Nonce
+amount	String	Transaction amount
+symbol	String	Currency symbol for the transaction amount
+methodId	String	Contract method ID
+fromDetails	Array	Details of transaction inputs
+>address	String	Sender/input address
+>vinIndex	String	Index of the input in the current transaction
+>preVoutIndex	String	Index of the output in the previous transaction
+>txhash	String	Transaction hash, used with preVoutIndex to uniquely identify the UTXO
+>isContract	Boolean	Whether the sender address is a contract (true: yes; false: no)
+>amount	String	Transaction amount
+toDetails	Array	Details of transaction outputs
+>address	String	Receiver/output address
+>voutIndex	String	Output index
+>isContract	Boolean	Whether the receiver address is a contract (true: yes; false: no)
+>amount	String	Transaction amount
+internalTransactionDetails	Array	Internal transaction details
+>from	String	Sender address for the internal transaction
+>to	String	Receiver address for the internal transaction
+>isFromContract	Boolean	Whether the sender address is a contract (true: yes; false: no)
+>isToContract	Boolean	Whether the receiver address is a contract (true: yes; false: no)
+>amount	String	Transaction amount
+>txStatus	String	Transaction status
+tokenTransferDetails	Array	Token transfer details
+>from	String	Sender address for token transfer
+>to	String	Receiver address for token transfer
+>isFromContract	Boolean	Whether the sender address is a contract (true: yes; false: no)
+>isToContract	Boolean	Whether the receiver address is a contract (true: yes; false: no)
+>tokenContractAddress	String	Token contract address
+>symbol	String	Token symbol
+>amount	String	Token amount
+l1OriginHash	String	Hash of the L1 transaction executed
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/post-transaction/transaction-detail-by-txhash?txHash=0x9ab8ccccc9f778ea91ce4c0f15517672c4bd06d166e830da41ba552e744d29a5&chainIndex=42161' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+
+Response Example
+Example with ETH{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "chainIndex": "42161",
+            "height": "245222398",
+            "txTime": "1724253417000",
+            "txhash": "0x9ab8ccccc9f778ea91ce4c0f15517672c4bd06d166e830da41ba552e744d29a5",
+            "gasLimit": "2000000",
+            "gasUsed": "2000000",
+            "gasPrice": "10000000",
+            "txFee":"",
+            "nonce": "0",
+            "symbol": "ETH",
+            "amount": "0",
+            "txStatus": "success",
+            "methodId": "0xc9f95d32",
+            "l1OriginHash": "0xa6a87ba2f18cc32bbae8f3b2253a29a9617ed1eb0940d80443f6e3bf9873dbad",
+            "fromDetails": [
+                {
+                    "address": "0xd297fa914353c44b2e33ebe05f21846f1048cfeb",
+                    "vinIndex": "",
+                    "preVoutIndex": "",
+                    "txHash": "",
+                    "isContract": false,
+                    "amount": ""
+                }
+            ],
+            "toDetails": [
+                {
+                    "address": "0x000000000000000000000000000000000000006e",
+                    "voutIndex": "",
+                    "isContract": false,
+                    "amount": ""
+                }
+            ],
+            "internalTransactionDetails": [
+                {
+                    "from": "0x0000000000000000000000000000000000000000",
+                    "to": "0xd297fa914353c44b2e33ebe05f21846f1048cfeb",
+                    "isFromContract": false,
+                    "isToContract": false,
+                    "amount": "0.02",
+                    "txStatus": "success"
+                },
+                {
+                    "from": "0xd297fa914353c44b2e33ebe05f21846f1048cfeb",
+                    "to": "0x428ab2ba90eba0a4be7af34c9ac451ab061ac010",
+                    "isFromContract": false,
+                    "isToContract": false,
+                    "amount": "0.00998",
+                    "txStatus": "success"
+                },
+                {
+                    "from": "0xd297fa914353c44b2e33ebe05f21846f1048cfeb",
+                    "to": "0x428ab2ba90eba0a4be7af34c9ac451ab061ac010",
+                    "isFromContract": false,
+                    "isToContract": false,
+                    "amount": "0.009977946366846017",
+                    "txStatus": "success"
+                }
+            ],
+            "tokenTransferDetails": []
+        }
+    ]
+}
+
+For BTC example:
+
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "chainIndex": "0",
+            "height": "858056",
+            "txTime": "1724403746000",
+            "txhash": "0538eec298699ff4b7cc07163c7216c48fe40caed492a3c655382bf0ae63db1a",
+            "gasLimit": "",
+            "gasUsed": "",
+            "gasPrice": "",
+            "txFee":"",
+            "nonce": "",
+            "symbol": "BTC",
+            "amount": "",
+            "txStatus": "success",
+            "methodId": "",
+            "l1OriginHash": "",
+            "fromDetails": [
+                {
+                    "address": "bc1py4kmmdsae08zd6jlfdkcr9gzagxrs3z5elw2hjyc5u883a8ah7ps98s0mn",
+                    "vinIndex": "0",
+                    "preVoutIndex": "1",
+                    "txHash": "b7b1460db2e7fff53cb1da10ad5351bd9a684668f21968a6b292dfe019605c4c",
+                    "isContract": false,
+                    "amount": "0.00001296"
+                }
+            ],
+            "toDetails": [
+                {
+                    "address": "bc1p7pgnqe87red4cvd7ml6rh9pl9ufpr522k2y3dpeyrvfc6g2g3r3s3ae9dr",
+                    "voutIndex": "0",
+                    "isContract": false,
+                    "amount": "0.00000546"
+                }
+            ],
+            "internalTransactionDetails": [],
+            "tokenTransferDetails": []
+        }
+    ]
+}

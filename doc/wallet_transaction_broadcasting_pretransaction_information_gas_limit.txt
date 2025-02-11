@@ -1,0 +1,50 @@
+Gas Limit#
+Retrieve estimated Gas Limit consumption through pre-execution of transaction information. Currently supports only EVM networks.
+
+Request Path#
+POST https://www.okx.com/api/v5/wallet/pre-transaction/gas-limit
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainIndex	String	Yes	Unique identifier for the chain
+fromAddr	String	Yes	From address
+toAddr	String	Yes	To address
+txAmount	String	No	Amount of main chain coins for the transaction. Default is 0. Required for mainnet transfers to calculate gaslimit properly，passed in the smallest unit of the mainnet coin, such as ETH wei.
+extJson	Object	No	Additional parameters for calldata and other information
+extJson
+
+Parameter	Type	Required	Description
+inputData	String	No	Calldata
+Response Parameters#
+Parameter	Type	Description
+gasLimit	String	Estimated gas limit
+
+Request Example#
+shell
+curl --location --request POST 'https://www.okx.com/api/v5/wallet/pre-transaction/gas-limit' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z' \
+--data-raw '{
+    "fromAddr": "0x383c8208b4711256753b70729ba0cf0cda55efad",
+    "toAddr": "0x4ad041bbc6fa102394773c6d8f6d634320773af4",
+    "txAmount": "31600000000000000",
+    "chainIndex": "1",
+    "extJson": {
+        "inputData":"041bbc6fa102394773c6d8f6d634320773af4"
+    }
+}'
+Response Example#
+200
+{
+    "code": "0",
+    "data": [
+        {
+            "gasLimit": "652683"
+        }
+    ],
+    "msg": ""
+}

@@ -1,0 +1,35 @@
+Total Value#
+Retrieve the total balance of all tokens and DeFi assets under an account. Supports filtering of risky airdrop tokens.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/asset/total-value
+
+Request Parameters#
+Parameter	Type	Required	Description
+accountId	String	Yes	Query total value for the account
+chains	String	No	Filter chains for which to query total assets, separated by ",". Supports up to 50 chains
+assetType	String	No	Query balance type. Default is to query all asset balances. 0: Query total balance for all assets, including tokens and DeFi assets. 1: Query only token balance. 2: Query only DeFi balance.
+excludeRiskToken	Boolean	No	Option to filter out risky airdrop tokens. Default is to filter. true: filter, false: do not filter
+Response Parameters#
+Parameter	Type	Description
+totalValue	String	Total asset balance based on the query type, returned in USD
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/asset/total-value?accountId=e7dba4c2-666d-496a-ad92-768d29291fee&chains=' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+Response Example#
+200
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "totalValue": "1172.895057177065864522056725546579939398"
+        }
+    ]
+}

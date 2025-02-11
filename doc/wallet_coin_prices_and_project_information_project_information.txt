@@ -1,0 +1,95 @@
+Project Information#
+Query additional information about a single token, such as token contract address, official token website URL, and social media links.
+
+Supports project information for native token and other tokens.
+
+Supports project information for inscription tokens on the Bitcoin chain such as BRC-20, Runes, ARC-20, and SRC-20.
+
+Supports project information for BRC-20 inscription tokens on the Fractal Bitcoin chain.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/token/token-detail
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainIndex	String	Yes	Unique identifier of the blockchain
+tokenAddress	String	No	Token address.
+1: Pass an empty string "" to query the native token of the corresponding chain.
+2: Pass the specific token contract address to query the corresponding token.
+3: Different inscription tokens are passed in the following formats:
+FBRC-20: Use fbtc_fbrc20_name, such as fbtc_fbrc20_babymusk
+BRC-20: Use btc-brc20-tick(name), such as btc-brc20-ordi
+Runes: Use btc-runesMain-tickId, such as btc-runesMain-840000:2
+SRC-20: Use btc-src20-name, such as btc-src20-utxo
+Response Parameters#
+Parameter	Type	Description
+logoUrl	String	URL of the token's logo
+officialWebsite	String	URL of the official website of the token
+socialUrls	Object	Social media links
+> twitter	Array	Twitter link(s), if available
+> facebook	Array	Facebook link(s), if available
+> reddit	Array	Reddit link(s), if available
+> messageboard	Array	Message board link(s), if available
+> chat	Array	Chat link(s), if available
+> github	Array	GitHub link(s), if available
+> whitepaper	Array	Whitepaper link(s), if available
+> announcement	Array	Announcement link(s), if available
+decimals	String	Token decimals
+tokenAddress	String	Token address.If the return is an empty string "", it means the query is for the native token of the corresponding blockchain.
+chainIndex	String	Unique identifier of the blockchain
+chainName	String	Name of the blockchain
+symbol	String	Token symbol
+name	String	Token name
+maxSupply	String	Maximum supply (across multiple chains, some data may be empty). Precision of 15 digits
+totalSupply	String	Total supply (across multiple chains, some data may be empty). Precision of 15 digits
+volume24h	String	24-hour trading volume in USD. Precision of 15 digits. Includes all liquidity pools accessible via OKX DEX.
+marketCap	String	Project market capitalization in USD. Precision of 15 digits
+
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/token/token-detail?chainIndex=56""&tokenAddress=0x6f620ec89b8479e97a6985792d0c64f237566746' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z' \
+Response Example#
+200
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "logoUrl": "https://static.oklink.com/cdn/web3/currency/token/bnb-wpc-0x6f620ec89b8479e97a6985792d0c64f237566746.png/type=png_350_0",
+            "officialWebsite": "https://www.wepiggy.com/",
+            "socialUrls": {
+                "messageboard": [
+                    "https://wepiggy-com.medium.com/"
+                ],
+                "github": [
+                    "https://github.com/WePiggy"
+                ],
+                "twitter": [
+                    "https://twitter.com/wepiggydotcom"
+                ],
+                "chat": [
+                    "https://t.me/wepiggy;https://discord.com/invite/pew9k58"
+                ],
+                "reddit": [
+                    "https://reddit.com/r/WePiggy/"
+                ]
+            },
+            "decimals": "18",
+            "tokenAddress": "0x6f620ec89b8479e97a6985792d0c64f237566746",
+            "chainIndex": "56",
+            "chainName": "BNB Chain",
+            "symbol": "wpc",
+            "maxSupply": "200000000.000000000000000",
+            "totalSupply": "",
+            "volume24h": "283632981.281666040000000",
+            "marketCap": "34510982165.370000000000000"
+        }
+    ]
+}

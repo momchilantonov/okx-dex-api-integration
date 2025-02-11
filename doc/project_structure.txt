@@ -1,0 +1,24 @@
+./src/
+├── api
+│   ├── dex -> folder for dex endpoints
+│   ├── wallet -> folderfor wallet endpoints
+│   └── requests.js
+├── auth
+│   └── signature.js
+├── config
+│   ├── config.js
+│   └── web3.js
+├── services
+│   ├── priceData.js
+└── utils
+    ├── addFeeParams.js
+    ├── getErrorCode.js
+    ├── getHmacSign.js
+    ├── getPreHash.js
+    ├── getRequestHeaders.js
+    ├── getRequestHostname.js
+    ├── getRequestOptions.js
+    ├── getRequestUrl.js
+    ├── getRequestUrlPath.js
+    ├── getRouterAddress.js
+    └── validateTtimeframe.js

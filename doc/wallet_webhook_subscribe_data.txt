@@ -1,0 +1,54 @@
+Subscribe Data#
+Subscribe data related to block events and transaction events. You can create up to 20 subscriptions at a time, as shown in the array format of the request example. After a successful subscription, messages will be pushed through webhook.
+
+Note
+In case of special situations such as block reorganization, the Webhook may resend data. When receiving this, you need to implement idempotency handling.
+Request Path#
+POST https://www.okx.com/api/v5/wallet/webhook/subscribe
+
+Request Parameters#
+Parameter	Type	Required	Description
+url	String	Yes	Webhook callback address
+For detailed usage, refer to here
+The callback address needs to be reviewed, and you can receive push messages only after the review is passed. Contact us
+type	String	Yes	Type of data to subscribe to. Valid values are:
+block: triggers when any block is generated
+token_issuance: Token issuance
+fee_fluctuation: Fee fluctuation
+chainIndex	String	Yes	Unique identifier of the chain
+name	String	No	Name of the subscription
+feeChangeFilter	Object	No	Fee fluctuation filter, applicable only when the type is fee_fluctuation
+> minChange	String	Yes	Minimum fluctuation
+> maxChange	String	No	Maximum fluctuation
+Response Parameters#
+Parameter	Type	Description
+id	String	Unique identifier of the subscription
+
+
+Request Example#
+shell
+curl --location --request POST 'https://www.okx.com/api/v5/wallet/webhook/subscribe' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z' \
+--data-raw '[
+    {
+        "chainIndex":"3",
+        "url":"http://your.server.com/webhook",
+        "type":"transaction"
+    }
+]'
+Response Example#
+200
+{
+    "code":"0",
+    "data":[
+        {
+        "id":"1"
+        }
+    ],
+    "msg":""
+}

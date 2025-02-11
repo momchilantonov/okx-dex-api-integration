@@ -1,0 +1,65 @@
+Transaction Order#
+Get the list of orders sent from Transaction API.This supports querying transactions on EVM and UTXO model networks, sorted in descending order by time.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/post-transaction/orders
+
+Request Parameters#
+Parameter	Type	Required	Description
+address	String	No	Query list by address. Either address or account ID is required.If both are provided, the account ID takes precedence.
+accountId	String	No	Query list by account ID. Either address or account ID is required
+chainIndex	String	No	Unique identifier for the chain
+txStatus	String	No	Transaction status:
+1: Pending
+2: Success
+3: Failed
+orderId	String	No	Unique identifier for the transaction order
+cursor	String	No	Cursor
+limit	String	No	Number of records returned, default is the most recent 20, maximum is 100
+Response Parameters#
+Parameter	Type	Description
+chainIndex	String	Unique identifier for the chain
+address	String	Address
+accountId	String	Unique identifier for the account
+orderId	String	Order ID
+txStatus	String	Transaction status:
+1: Pending
+2: Success
+3: Failed
+txHash	String	Transaction hash
+limit	String	Number of records returned, default is the most recent 20, maximum is 100
+
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/post-transaction/orders?accountId=c79e7775-9e78-4a2d-b27f-9021f3bf5fca&chainIndex=1' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+Response Example#
+200
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "chainIndex": "1",
+            "accountId": "c79e7775-9e78-4a2d-b27f-9021f3bf5fca",
+            "orderId": "016cf21d020be6c2f071dad9bbd8ec5cb9342fa8",
+            "address": "0x238193be9e80e68eace3588b45d8cf4a7eae0fa3",
+            "txHash": "0xb240e65dd9156b4a450be72f6c9fe41be6f72397025bb465b21a96ee9871a589",
+            "txstatus": "2"
+        },
+        {
+            "chainIndex": "1",
+            "accountId": "c79e7775-9e78-4a2d-b27f-9021f3bf5fca",
+            "orderId": "592051a92a744627022955be929ecb5c9e777705",
+            "address": "0x238193be9e80e68eace3588b45d8cf4a7eae0fa3",
+            "txHash": "0xc401ffcd2a2b4b1db42ce68dfde8e63c0a1e9653484efb2873dbf5d0cbeb227a",
+            "txstatus": "1"
+        }
+    ]
+}

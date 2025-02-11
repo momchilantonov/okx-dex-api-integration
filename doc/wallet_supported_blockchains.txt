@@ -1,0 +1,240 @@
+Building an On-Chain Data Dashboard#
+Ensure that you have completed the preparation work. You can use this example to familiarize yourself with various methods of on-chain data queries.
+
+Method 1: Query by Address#
+Query Assets#
+Call the API to get asset data integrated with 60+ chains, updated in seconds.
+
+Query Coin Prices and Information#
+Call the API to get coin price data from multiple data sources including major exchanges, DEXs, and markets.
+
+Query Owned UTXOs and Inscriptions#
+Call the API to get owned UTXOs and inscription details.
+
+Query Transaction History#
+Call the API to get full transaction history for each address on the chain since creation.
+
+Query Authorizations#
+Call the API to view authorization details on the address.
+
+Method 2: Batch Query by Account#
+Step 1: Create an Account#
+Create a wallet account (AccountId) to aggregate the addresses you want to view and perform batch queries for token balances and transaction history.
+
+Implementation: Call the API to create a wallet account.
+
+For example, subscribe to the same address across different chains as follows:
+
+// Define your parameters
+const addresses = [
+    {
+      "chainIndex":"1",
+      "address":"0x561815e02bac6128bbbbc551005ddfd92a5c24db",
+    },
+    {
+      "chainIndex":"10",
+      "address":"0x561815e02bac6128bbbbc551005ddfd92a5c24db",
+    }
+];
+
+const getCreateWalletAccountBody = {
+    addresses: addresses
+};
+
+// Define the helper function
+const getCreateWalletAccountData = async () => {
+    const apiRequestUrl = getRequestUrl(
+        apiBaseUrl,
+        '/api/v5/wallet/account/create-wallet-account'
+    );
+    return fetch(apiRequestUrl, {
+        method: 'post',
+        headers: headersParams,
+        body: JSON.stringify(getCreateWalletAccountBody),
+    })
+    .then((res) => res.json())
+    .then((res) => {
+        return res;
+    });
+  };
+
+const { data: createWalletAccountData } = await getCreateWalletAccountData();
+
+<hr/>
+
+### Step 2: Query Balances
+
+The wallet account can directly call the API to view the tokens held in the account. [Click here to check wallet account token balances](./walletapi-api-wallet-all-token-balances) for details.
+
+```javascript
+// Define parameters
+const getAssetsParams = {
+    accountId: '13886e05-1265-4b79-8ac3-b7ab46211001',
+};
+
+// Define the helper function
+const getAssetsData = async () => {
+    const apiRequestUrl = getRequestUrl(
+      apiBaseUrl,
+      '/api/v5/wallet/asset/wallet-all-token-balances',
+      getAssetsParams
+    );
+    return fetch(apiRequestUrl, {
+      method: 'GET',
+      headers: headersParams,
+    })
+    .then((res) => res.json())
+    .then((res) => {
+        return res;
+    });
+  };
+
+const { data: getAssetsData } = await getAssetsData();
+When querying assets, you will receive a response like this:
+
+{
+    "code": "0",
+    "data": [
+        {
+            "chainIndex": "1",
+            "tokenAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "symbol": "USDT",
+            "balance": "0.688467",
+            "tokenPrice": "0.99993",
+            "tokenType": "1"
+        },
+        {
+            "chainIndex": "1",
+            "tokenAddress": "0x514910771af9ca656af840dff83e8264ecf986ca",
+            "symbol": "LINK",
+            "balance": "0.000000366257612925",
+            "tokenPrice": "14.108071299717093",
+            "tokenType": "1"
+        }
+    ],
+    "msg": "success"
+}
+Step 3: Query Transaction History
+
+After sending a transaction, use the GET /api/v5/wallet/post-transaction/transaction-detail-by-txhash endpoint and provide the txHash to retrieve the transaction details.
+
+// Define your parameters
+const params = {
+    txhash: '0x9ab8ccccc9f778ea91ce4c0f15517672c4bd06d166e830da41ba552e744d29a5',
+    chainIndex: '42161'
+  };
+
+// Define helper function
+const getTransactionDetailData = async () => {
+    const apiRequestUrl = getRequestUrl(
+        apiBaseUrl,
+        '/api/v5/wallet/post-transaction/transaction-detail-by-txhash',
+        params
+    );
+    return fetch(apiRequestUrl, {
+        method: 'get',
+        headers: headersParams,
+    })
+    .then((res) => res.json())
+    .then((res) => {
+        return res;
+    });
+  };
+
+const { data: transactionDetailData } = await getTransactionDetailData();
+When querying transaction history, you will receive a response like this:
+
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "chainIndex": "42161",
+            "height": "245222398",
+            "txTime": "1724253417000",
+            "txhash": "0x9ab8ccccc9f778ea91ce4c0f15517672c4bd06d166e830da41ba552e744d29a5",
+            "gasLimit": "2000000",
+            "gasUsed": "2000000",
+            "gasPrice": "10000000",
+            "nonce": "0",
+            "symbol": "ETH",
+            "amount": "0",
+            "txStatus": "success",
+            "methodId": "0xc9f95d32",
+            "l1OriginHash": "0xa6a87ba2f18cc32bbae8f3b2253a29a9617ed1eb0940d80443f6e3bf9873dbad",
+            "fromDetails": [
+                {
+                    "address": "0xd297fa914353c44b2e33ebe05f21846f1048cfeb",
+                    "vinIndex": "",
+                    "preVoutIndex": "",
+                    "txHash": "",
+                    "isContract": false,
+                    "amount": ""
+                }
+            ],
+            "toDetails": [
+                {
+                    "address": "0x000000000000000000000000000000000000006e",
+                    "voutIndex": "",
+                    "isContract": false,
+                    "amount": ""
+                }
+            ],
+            "internalTransactionDetails": [
+                {
+                    "from": "0x0000000000000000000000000000000000000000",
+                    "to": "0xd297fa914353c44b2e33ebe05f21846f1048cfeb",
+                    "isFromContract": false,
+                    "isToContract": false,
+                    "amount": "0.02",
+                    "state": "success"
+                },
+                {
+                    "from": "0xd297fa914353c44b2e33ebe05f21846f1048cfeb",
+                    "to": "0x428ab2ba90eba0a4be7af34c9ac451ab061ac010",
+                    "isFromContract": false,
+                    "isToContract": false,
+                    "amount": "0.00998",
+                    "state": "success"
+                },
+                {
+                    "from": "0xd297fa914353c44b2e33ebe05f21846f1048cfeb",
+                    "to": "0x428ab2ba90eba0a4be7af34c9ac451ab061ac010",
+                    "isFromContract": false,
+                    "isToContract": false,
+                    "amount": "0.009977946366846017",
+                    "state": "success"
+                }
+            ],
+            "tokenTransferDetails": []
+        }
+    ]
+}
+By now, you have basically implemented the basic functionality needed to develop an on-chain data dashboard.
+
+Additionally, the wallet API provides a rich set of interfaces to fully meet the needs of exchange wallet developers. Please refer to the sections below for more information.
+
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/chain/supported-chains' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+Response Example#
+200
+{
+    "code": "0",
+    "data": [
+        {
+            "name": "Ethereum",
+            "logoUrl": "http://www.eth.org/eth.png",
+            "shortName": "ETH",
+            "chainIndex": "1"
+        }
+    ],
+    "msg": ""
+}

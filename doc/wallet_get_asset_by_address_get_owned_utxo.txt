@@ -1,0 +1,347 @@
+Get Owned UTXO#
+Query UTXOs under a specified address on UTXO chains such as BTC, Fractal BTC etc.
+
+The results are sorted in descending order by asset size, with a maximum of 10,000 records returned.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/utxo/utxos
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainIndex	String	Yes	Unique identifier for the chain
+address	String	Yes	Address information, required
+cursor	String	No	Cursor, defaults to the first position
+limit	String	No	Default is 50, max is 100
+Response Parameters#
+Parameter	Type	Description
+utxos	Array	UTXOs for the specified address
+>txHash	String	Transaction hash
+>voutIndex	String	Identifies which output position the UTXO is in; together with txHash, uniquely maps to a specific UTXO
+>amount	String	Amount of the UTXO, in satoshis
+>spendStatus	String	UTXO Spending Status
+1: spending,
+2: unspent
+cursor	String	Cursor
+
+
+Request Example
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/utxo/utxos?chainIndex=0&address=bc1p8qfrmxdlmynr076uu28vlszxavwujwe7dus0r8y9thrnp5lgfh6qu2ctrr'
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+
+Response Example
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "cursor": "1",
+            "utxos": [
+                {
+                    "txHash": "9e334346dd977cd766895c930e3921265abddb19fda4df0aa5cfd7d9201ed30a",
+                    "voutIndex": "0",
+                    "amount": "0.001",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "d23531d511a841b67022aad0d21d82d66e1b35f023670398579540e84e23255c",
+                    "voutIndex": "1",
+                    "amount": "0.0008485",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "5af52eda570c7f368793cd10788ce92bd2cbbf0668210306b82e63dd721c236a",
+                    "voutIndex": "1",
+                    "amount": "0.00084643",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "54d4a7c116db0fb329e458afa2e9004244d43865fce40179f75a5adc9c006fdc",
+                    "voutIndex": "1",
+                    "amount": "0.00084083",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "1cb254487dac6b52dab68c9566b90b9423667f8789c1eeeb1936571cc702005e",
+                    "voutIndex": "2",
+                    "amount": "0.00040348",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "562428df1f5cdcaca9f6183dc0fe9d8a4f9e310a2c8fce4a5d3a6341e04f1455",
+                    "voutIndex": "1",
+                    "amount": "0.0001",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "7c0dbe192e5595f23cf7a65e4497edd5c98ccf20e3299c1fafa19db6485b29b9",
+                    "voutIndex": "0",
+                    "amount": "0.0001",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "0b70ed133dab27f44f115c81198a73853ef7d225c16f1fa8da3a618dcee45a8b",
+                    "voutIndex": "0",
+                    "amount": "0.00009065",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "c1ce0a65ea9d13915a3703be1dc56cdfb75cf187aaf5fbf94af2f577f2834f3b",
+                    "voutIndex": "1",
+                    "amount": "0.00007924",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "d3fe9ff28b85ca494ea5ac99414cfd92fbf4c18948ed5e805b2b908763c70559",
+                    "voutIndex": "0",
+                    "amount": "0.000018",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "c8b69de2e3e0f89a2c6d73570c5f86b49d2f2a7635d8e7c9e85e593ab20ec9f7",
+                    "voutIndex": "0",
+                    "amount": "0.000012",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "a1af403781f8a78be8fcd3b1c3f7d3834f9c5c96e96ab7de2c591abe95ad1b77",
+                    "voutIndex": "0",
+                    "amount": "0.000012",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "dcf6575f35040c3203181925e46cb65d8663c950f04c38ec836a1047bc4b6e1d",
+                    "voutIndex": "0",
+                    "amount": "0.000012",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "a4323a33b894710b023b15ec1cc04b31a305026401edcaa1efbd63e30ef1c29f",
+                    "voutIndex": "0",
+                    "amount": "0.000012",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "b44859f6496c394b65290f66aea756516cce13b71a243530da6b4c0cd05187a5",
+                    "voutIndex": "0",
+                    "amount": "0.000012",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "8409b14c213ca2980141ee7706b790109b83d0c16a2748f11936a23cac1c2cda",
+                    "voutIndex": "0",
+                    "amount": "0.000012",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "562428df1f5cdcaca9f6183dc0fe9d8a4f9e310a2c8fce4a5d3a6341e04f1455",
+                    "voutIndex": "0",
+                    "amount": "0.000012",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "c6408557c17429f29a77372a0911e3d6a7849a2b1e1dc2dda96b1085b8262013",
+                    "voutIndex": "0",
+                    "amount": "0.000012",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "a9cd8b4a9c751578cf81cdcf324f7c7461ed12624d6eeac67eab541732e4f34f",
+                    "voutIndex": "0",
+                    "amount": "0.000012",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "02c036196f148a9cdd9fc8abc7b8ef124feb84375a1d708126fab6d319bee7a1",
+                    "voutIndex": "0",
+                    "amount": "0.000012",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "bf9536057243e0021ecd7f4a40934bbec766cfeacee85569131165f8bd3d19e9",
+                    "voutIndex": "0",
+                    "amount": "0.000012",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "c98cee07c44d26b47e351df12757e88d052fea6ee7ab8588e2c1d68324d5388c",
+                    "voutIndex": "0",
+                    "amount": "0.000012",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "f230741451130da4e15bbbe37f4beda7bbaf9b5b4e881e79ac9f94a920c7730e",
+                    "voutIndex": "0",
+                    "amount": "0.00001",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "0ffc438bb4a5ef6a79108485fe4334a98f4dcbc8b9d914f211e67f3c720a1cfe",
+                    "voutIndex": "0",
+                    "amount": "0.00001",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "8f1387b1f67f0b04923a9980818645c45fe55724c8ab91ee00930fcf12407734",
+                    "voutIndex": "0",
+                    "amount": "0.00001",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "9caa4f86c9a368800ad0f94648bede27ed0229142eb89a49d54bcce97239a000",
+                    "voutIndex": "0",
+                    "amount": "0.00001",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "ed031c5c5eabe4f137d95b6a8ae714eff54e42887cf80f78ded88a36f3d75dad",
+                    "voutIndex": "0",
+                    "amount": "0.00001",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "d3fe9ff28b85ca494ea5ac99414cfd92fbf4c18948ed5e805b2b908763c70559",
+                    "voutIndex": "6",
+                    "amount": "0.000006",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "09add0ddb2444f2077c4ddfaafe8ba79855237467d2d3ceaf74d13ec0135a33f",
+                    "voutIndex": "1",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "ef2cf264fc5ac437446c9f82c396241a8d84d0af35333d14eb780758c7dfb8fa",
+                    "voutIndex": "1",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "5443eca0ec477505b26c2ff7d8479f218d093df552132d542547865a8d5489d1",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "7ad7d948cba112cbb0122979578714ad3157bf17ee397f55d6f9b542d5360388",
+                    "voutIndex": "1",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "52aaab23cfe17dccad63220647d9c0cb77a45bd1334d324bba487472c2d37501",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "6e5c6c1206e2ff076dcddda6fbacbd6faf42d49a512adab7b9732b1099680273",
+                    "voutIndex": "1",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "7345405bb0fb6b846e3c1bfac8b9ef5dfec727444fcf6ad41c74c8f5b6cb99db",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "4f1e0f6842bd595362d74558f31105977d64060b6c587b3be257c6e648f1d44c",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "703a5caa76b3bb97114c6eed4d533d99f44210ed000313b4b8d5878a9bc26a36",
+                    "voutIndex": "1",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "69f9ff6843ea684fe68751adb8fb2fe1ae8caf553999c389bf5fcacf018c4f48",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "4c59b50c43a00b6db36129a9bcd16e88b39948070dd110660fee2b1ff61545da",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "2361f87d211d6b2982647e9ca776c2368daad41609d1ae25a45f95bf5e26b896",
+                    "voutIndex": "2",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "9b83ac2f681ec69cddf330949a1dd0215d10e7ec45bbd9741680449218ac376d",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "6eca7731240f4e3b8d68a25183e17f1c7079fb0fca60ea2836eef65d7cfbe2cf",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "a8e5e909db42a0ddbcb58964d0dbdafb0c810303d275584d53614c47b06422fa",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "ee50b94275d8b57bd4bb9a5b6978f58615b7ab6ce925624e2cddd7adfd13e75e",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "6688f647df1a320a5b9c37a95b127777082085702eaec98cba53d428e4a80ad4",
+                    "voutIndex": "2",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "6dd734bb29e4c6b978351fe527632fa2546716f9d2e6f65a3e804f077147a15e",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "2e9d38d44c130d692a82a07d73e722463c494f0b4a552d21e0612be00e7a9809",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "f5e53dcfbf891fbe6c44865930921d30d060a8a65a585fdd6f1ca0c25baa93f9",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "a9cd8b4a9c751578cf81cdcf324f7c7461ed12624d6eeac67eab541732e4f34f",
+                    "voutIndex": "1",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                },
+                {
+                    "txHash": "7ccfaaab90e45b2a51729a0ab79d270dbf2616d42c118f55a9e9bb9f33ecfed3",
+                    "voutIndex": "0",
+                    "amount": "0.00000546",
+                    "spendStatus": "2"
+                }
+            ]
+        }
+    ]
+}

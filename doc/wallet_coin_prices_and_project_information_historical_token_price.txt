@@ -1,0 +1,92 @@
+Historical Token Price#
+Query historical prices for a specific token.
+
+Supports historical prices for native token and other tokens.
+
+Supports historical prices for inscription tokens on the Bitcoin chain such as BRC-20, Runes, ARC-20, and SRC-20.
+
+Supports historical prices for BRC-20 inscription tokens on the Fractal Bitcoin chain.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/token/historical-price
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainIndex	String	Yes	Unique identifier of the blockchain
+tokenAddress	String	No	Token address.
+1: Pass an empty string "" to query the native token of the corresponding chain.
+2: Pass the specific token contract address to query the corresponding token.
+3: Different inscription tokens are passed in the following formats:
+FBRC-20: Use fbtc_fbrc20_name, such as fbtc_fbrc20_babymusk
+BRC-20: Use btc-brc20-tick(name), such as btc-brc20-ordi
+Runes: Use btc-runesMain-tickId, such as btc-runesMain-840000:2
+SRC-20: Use btc-src20-name, such as btc-src20-utxo
+limit	String	No	Number of entries per query, default is 50, maximum is 200
+cursor	String	No	Cursor position, defaults to the first entry
+begin	String	No	Start time to query historical prices after. Unix timestamp in milliseconds
+end	String	No	End time to query historical prices before. If neither begin nor end is provided, query historical prices before the current time. Unix timestamp in milliseconds
+period	String	No	Time interval unit:
+1m: 1 minute
+5m: 5 minutes
+30m: 30 minutes
+1h: 1 hour
+1d: 1 day (default)
+Response Parameters#
+Parameter	Type	Description
+prices	Array	List of historical prices
+>time	String	Timestamp of the minute (whole minute)
+>price	String	Cryptocurrency price (precision 18 decimal places)
+
+
+Request Example#
+shell
+For EVM:
+
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/token/historical-price?chainIndex=1&limit=5&begin=1700040600000&period=5m' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+
+For BTC:
+
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/token/historical-price?chainIndex=0&limit=5&period=1m&tokenAddress=btc-brc20-ordi' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+Response Example#
+200
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "cursor": "31",
+            "prices": [
+                {
+                    "time": "1700040600000",
+                    "price": "1994.430000000000000000"
+                },
+                {
+                    "time": "1700040300000",
+                    "price": "1994.190000000000000000"
+                },
+                {
+                    "time": "1700040000000",
+                    "price": "1992.090000000000000000"
+                },
+                {
+                    "time": "1700039700000",
+                    "price": "1992.190000000000000000"
+                },
+                {
+                    "time": "1700039400000",
+                    "price": "1990.190000000000000000"
+                }
+            ]
+        }
+    ]
+}

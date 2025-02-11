@@ -1,0 +1,81 @@
+Total Token Balances#
+Query the token balance list for a wallet account across multiple chains or a specified chain. Balance query supports:
+
+Chain native tokens
+ERC20 tokens on EVM chains
+BRC-20, ARC-20, Runes, and SRC-20 tokens in the Bitcoin ecosystem
+Fractal Bitcoin chain's BRC-20 tokens
+Additionally, this interface supports filtering out risky airdrop tokens.
+
+Request Path#
+GET https://www.okx.com/api/wallet/asset/wallet-all-token-balances
+
+Request Parameters#
+Parameter	Type	Required	Description
+accountId	String	Yes	Unique identifier for the account.
+chains	Array	No	When filtering the chains for querying asset details, multiple chains should be separated by commas (,). A maximum of 50 chains is supported.
+filter	String	No	0: Filter risk tokens
+1: Do not filter risk tokens
+default is to filter
+Response Parameters#
+Parameter	Type	Description
+tokenAssets	Array	Token balances
+>chainIndex	String	Unique identifier for the chain
+>tokenAddress	String	Contract address
+>address	String	Wallet address
+>symbol	String	Token symbol
+>balance	String	Token amount
+>rawBalance	String	Raw balance of token address. More chains will be supported soon. For unsupported chains, this field is empty.
+>tokenPrice	String	Token value in USD
+>tokenType	String	Token type:
+1: token
+2: inscription
+>isRiskToken	Boolean	true: Risk token
+false: Not a risk token
+timeStamp	String	Timestamp when the token was retrieved, Unix timestamp in milliseconds
+
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/asset/wallet-all-token-balances?filter=&chains=1&accountId=31f55853-d430-42c5-b4c6-710d39848cd1' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+
+Response Example
+{
+    "code": "0",
+    "data": [
+        {
+            "tokenAssets": [
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xf4d2888d29d722226fafa5d9b24f9164c092421e",
+                    "symbol": "LOOKS",
+                    "balance": "0.6908810093750312",
+                    "rawBalance": "",
+                    "tokenPrice": "0.035834243057603148",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "address":"0xa03400e098f4421b34a3a44a1b4e571419517687"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "",
+                    "symbol": "ETH",
+                    "balance": "8",
+                    "rawBalance": "",
+                    "tokenPrice": "2650.43",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "address":"0xa03400e098f4421b34a3a44a1b4e571419517687"
+                }
+            ],
+            "timeStamp": "1724153197342"
+        }
+    ],
+    "msg": "success"
+}

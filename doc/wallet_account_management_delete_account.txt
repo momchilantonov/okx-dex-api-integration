@@ -1,0 +1,32 @@
+Delete Account#
+Delete an existing account.
+
+Request Path#
+POST https://www.okx.com/api/v5/wallet/account/delete-account
+
+Request Parameters#
+Parameter	Type	Required	Description
+accountId	String	Yes	Unique identifier of the account
+Response Parameters#
+None
+
+Request Example#
+shell
+curl --location --request POST 'https://www.okx.com/api/v5/wallet/account/delete-account' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z' \
+--data-raw '{
+    "accountId": "13886e05-1265-4b79-8ac3-b7ab46217655"
+}'
+
+Response Example#
+200
+{
+    "code": "0",
+    "data": [],
+    "msg": "success"
+}

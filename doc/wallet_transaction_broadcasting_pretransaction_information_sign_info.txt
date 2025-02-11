@@ -1,0 +1,182 @@
+Sign Info#
+This API can retrieve all information needed to assemble a transaction at once (gas-limit, gas-price, nonce).
+
+Request Path#
+POST https://www.okx.com/api/v5/wallet/pre-transaction/sign-info
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainIndex	String	Yes	Unique identifier for the chain
+fromAddr	String	Yes	From address
+toAddr	String	Yes	To address
+txAmount	String	No	Native token amount for the transaction, default is 0. Must include this parameter when involving mainnet coin transfer, otherwise it will affect the calculation of gas limit，passed in the smallest unit of the chain native token, such as ETH wei.
+extJson	Object	Yes	Extension parameters, used to add calldata and other information
+extJson
+
+Parameter	Type	Required	Description
+inputData	String	No	calldata
+protocol	String	No	Query for specific protocol:
+1: BRC-20
+2: ARC-20
+3: Runes
+4: ordi_nft
+tokenAddress	String	No	Only appliable to Solana
+permissionType	String	No	Only appliable to Tron
+1:owner permission
+2: witness permission
+1 by default
+feeLimit	String	No	Only appliable to Tron. Required if interact with contract, 30000000 by default
+Response Parameters#
+EVM#
+Parameter	Type	Description
+gasLimit	String	Gas consumption
+nonce	String	Current Number, This endpoint only returns the on-chain nonce. For example, if the maximum nonce that has successfully been confirmed on-chain for the current address is 10, the result of the request will be 11. If you need the nonce from the memory pool, please refer to Get Nonce.
+gasPrice	Object	Gas consumption price
+>normal	String	Medium gas price, in wei
+>min	String	Low gas price, in wei
+>max	String	High gas price, in wei
+>supporteip1559	Boolean	Whether supports EIP 1559
+>eip1559Protocol	Object	EIP 1559 protocol detail
+eip1559 Protocol
+Parameter	Type	Description
+eip1559Protocol	Object	EIP 1559 protocol detail
+>baseFee	String	Base fee
+>proposePriorityFee	String	Medium priority fee, in wei
+>safePriorityFee	String	Low priority fee, in wei
+>fastPriorityFee	String	High priority fee, in wei
+UTXO#
+Parameter	Type	Description
+normalFeeRate	String	Medium fee rate
+maxFeeRate	String	High fee rate
+minFeeRate	Object	Low fee rate
+inscriptionOutput	String	Inscription output size
+minOutput	String	Minimum inscription output size, in Satoshi (usually 546 Satoshi)
+normalCost	String	Single inscription transaction cost, in Satoshi
+maxCost	String	Maximum single inscription transaction cost, in Satoshi
+minCost	String	Minimum single inscription transaction cost, in Satoshi
+Solana#
+Parameter	Type	Description
+baseFee	String	Base fee
+priorityFee	String	Priority fee
+>normalUnitPrice	Object	Normal price
+>minUnitPrice	String	Minimum price
+>maxUnitPrice	String	Maximum price
+recentBlockHash	String	Recent block hash
+lastValidBlockHeight	String	Last valid block
+fromAddressRent	String	Rent for fromAddress
+toAddressRent	String	Rent for toAddress
+tokenAccountInfo	String	Token account information for fromAddress. Exists if token-transfer happened.
+>lamports	String	Lamports
+>ownerAddress	String	From address
+>mintAddress	String	Token address
+>tokenAccountAddress	String	Token account address
+>decimal	String	Decimal
+Tron#
+Parameter	Type	Description
+fee	String	Fee
+refBlockBytes	String	Reference block bytes.
+The 6th to 8th bytes (not included) of the reference block height are used to help verify whether the transaction is based on the valid state of the current blockchain and prevent forked transaction replay
+refBlockHash	Object	Recenteference block hash.
+The 8th to 16th bytes (not included) of the reference block hash are used. If the transaction's ref_block_hash does not match the actual existing block hash, the transaction may be rejected or marked as invalid.
+expiration	String	Expiration time
+timestamp	String	Timestamp
+
+Request Example#
+shell
+curl --location --request POST 'https://www.okx.com/api/v5/wallet/pre-transaction/sign-info' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z' \
+--data-raw '{
+    "accountId":"0x04ad62387d1f1c7034087bbe4d16163d06fae42d",
+    "chainIndex": "1",
+    "tokenAddress": "0xdf54b6c6195ea4d948d03bfd818d365cf175cfc2"
+}'
+
+Response Example
+// EVM
+{
+  "code": "0",
+  "data": [
+    {
+      "gasLimit": "21000",
+      "nonce": "15",
+      "gasPrice": {
+        "normal": "21289500000",
+        "min": "15670000000",
+        "max": "29149000000",
+        "supportEip1559": true,
+        "eip1599Protocol": {
+          "suggestBaseFee": "15170000000",
+          "baseFee": "15170000000",
+          "proposePriorityFee": "810000000",
+          "safePriorityFee": "500000000",
+          "fastPriorityFee": "3360000000"
+        }
+      }
+    }
+  ],
+  "msg": ""
+}
+ // UTXO/ BRC-20
+{
+  "code": "0",
+  "data": [
+    {
+      "normalFeeRate": "27",
+      "maxFeeRate": "35",
+      "minFeeRate": "22",
+      "inscriptionOutput": "546",
+      "minOutput": "1500",
+      "normalCost": "1800",
+      "maxCost": "3600",
+      "minCost": "600"
+    }
+  ]
+}
+
+ //Solana
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "baseFee": "5000",
+            "priorityFee": {
+                "normalUnitPrice": "4325963",
+                "minUnitPrice": "4325963",
+                "maxUnitPrice": "4325963"
+            },
+            "recentBlockHash": "C7Qq7cLjBQSU2eTS7458DDe1HvmBubLv9wi4NMH9GGtc",
+            "lastValidBlockHeight": "280957599",
+            "fromAddressRent": "890880",
+            "toAddressRent": "0",
+            "tokenAccountInfo": {
+                "lamports": "2039280",
+                "ownerAddress": "HnRfqMVCpYAvTVRZJJtrR5j2Kx8qvz4HvE3eL4hUgheV",
+                "mintAddress": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+                "tokenAccountAddress": "CFYZjn1dVWzbwDq7zuXtwa2NystiqA4QALKqMoA98TB6",
+                "decimal": "6"
+            }
+        }
+    ]
+}
+
+// TRON
+
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "fee": "3150000",
+            "refBlockBytes": "8cfe",
+            "refBlockHash": "dc8399fedb8cf542",
+            "expiration": "1732088289000",
+            "timestamp": "1732084764202"
+        }
+    ]
+}

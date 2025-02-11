@@ -1,0 +1,48 @@
+Get Accounts#
+List accounts created under the project.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/account/accounts
+
+Request Parameters#
+Parameter	Type	Required	Description
+limit	String	No	Number of items to query each time, default is 50, maximum is 100
+cursor	String	No	Cursor position, defaults to the first one
+Response Parameters#
+Parameter	Type	Description
+cursor	String	Cursor
+accounts	Array	List of accounts
+>accountId	String	Unique identifier of the account
+>accountType	String	0: Wallet account
+1: Watch-only account
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/account/accounts' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z' \
+Response Example#
+200
+{
+    "code": "0",
+    "data": [
+        {
+            "cursor": "50",
+            "accounts": [
+                {
+                    "accountId": "0xdf54b6c6195ea4d948d03bfd818d365cf175cfc2",
+                    "accountType": "0"
+                },
+                {
+                    "accountId": "0x04ad62387d1f1c7034087bbe4d16163d06fae42d",
+                    "accountType": "1"
+                }
+            ]
+        }
+    ],
+    "msg": "success"
+}

@@ -1,0 +1,242 @@
+Swap#
+Generate the data to call the OKX DEX router to execute a swap.
+
+Note
+In Uni v3 pools, the following scenario may occur:
+If the liquidity for the desired token pair in the pool is depleted, the pool will only consume part of the payment token, leaving a remainder.
+As a fully decentralized smart contract, the OKX DEX Router will automatically refund the remainder.
+During your integration, please ensure compatibility with this scenario by configuring your contract to support token refunds, thereby ensuring a smooth user experience.
+Request address#
+GET https://www.okx.com/api/v5/dex/aggregator/swap
+
+Request param#
+Parameter	Type	Required	Description
+chainId	String	Yes	Chain ID (e.g., 1 for Ethereum. See Chain IDs)
+amount	String	Yes	The input amount of a token to be sold
+(set in minimal divisible units, e.g., 1.00 USDT set as 1000000, 1.00 DAI set as 1000000000000000000), you could get the minimal divisible units from Tokenlist.
+fromTokenAddress	String	Yes	The contract address of a token you want to send (e.g.,0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)
+toTokenAddress	String	Yes	The contract address of a token you want to receive (e.g.,0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)
+slippage	String	Yes	Slippage limit.
+
+Note:
+1. For EVM networks, the slippage setting has a minimum value of 0 and a maximum value of 1.
+2. For Solana, the slippage setting has a minimum value of 0 and a maximum value of less than 1.
+
+(For example: 0.005 means that the maximum slippage for this transaction is 0.5%, while 1 means that the maximum slippage of this transaction is 100%.)
+userWalletAddress	String	Yes	User's wallet address (e.g.,0x3f6a3f57569358a512ccc0e513f171516b0fd42a)
+swapReceiverAddress	String	No	Recipient address of a purchased token if not set, userWalletAddress will receive a purchased token (e.g.,0x3f6a3f57569358a512ccc0e513f171516b0fd42a)
+feePercent	String	No	The percentage of fromTokenAmount or toTokenAmount will be sent to the referrer’s address, the rest will be set as the input amount to be sold. Min percentage: 0. Max percentage: 3.
+Maximum 2 decimal points. Longer sections will be automatically omitted. (E.g. 1.326% is the actual input, but the final calculation will only adopt 1.32%.)
+fromTokenReferrerWalletAddress	String	No	The wallet address to receive the commission fee from the fromToken.
+When using the API, you need to configure the commission ratio using feePercent.
+Each transaction can only choose commission from either the fromToken or the toToken.
+
+Note:
+1. For EVM chains: Transactions involving wrapped pairs, such as ETH and WETH, are not supported here.
+2. For Solana chain: The commission address must have some SOL deposited in advance for activation.
+toTokenReferrerWalletAddress	String	No	The wallet address to receive the commission fee from the toToken.
+When using the API, you need to configure the commission ratio using feePercent.
+Each transaction can only choose commission from either the fromToken or the toToken.
+
+Note:
+1. For EVM chains: Transactions involving wrapped pairs, such as ETH and WETH, are not supported here.
+2. For Solana chain: The commission address must have some SOL deposited in advance for activation.
+gaslimit	String	No	（Optional, The gas (in wei) for the swap transaction. If the value is too low to achieve the quote, an error will be returned
+gasLevel	String	No	(Optional, defaults to average) The target gas price level for the swap transaction,set to average or fast or slow
+dexIds	String	No	DexId of the liquidity pool for limited quotes, multiple combinations separated by , (e.g., 1,50,180, see liquidity list for more)
+directRoute	Boolean	No	The default setting is false. When enabled, Direct Routes restrict our routing to a single liquidity pool only. Currently, this feature is only active for Solana swaps.
+priceImpactProtectionPercentage	String	No	(Optional. The default is 90%.) The percentage (between 0 - 1.0) of the price impact allowed.
+
+When the priceImpactProtectionPercentage is set, if the estimated price impact is above the percentage indicated, an error will be returned. For example, if PriceImpactProtectionPercentage = .25 (25%), any quote with a price impact higher than 25% will return an error.
+
+This is an optional feature, and the default value is 0.9. When it’s set to 1.0 (100%), the feature will be disabled, which means that every transaction will be allowed to pass.
+
+Note: If we’re unable to calculate the price impact, we’ll return null, and the price impact protection will be disabled.
+callDataMemo	String	No	You can customize the parameters to be sent on the blockchain in callData by encoding the data into a 128-character 64-bytes hexadecimal string. For example, the string “0x...111” needs to keep the “0x” at its start.
+computeUnitPrice	String	No	Used for transactions on the Solana network and similar to gasPrice on Ethereum. This price determines the priority level of the transaction. The higher the price, the more likely that the transaction can be processed faster.
+computeUnitLimit	String	No	Used for transactions on the Solana network and analogous to gasLimit on Ethereum, which ensures that the transaction won’t take too much computing resource.
+autoSlippage	Boolean	No	Default is false. When set to true, the original slippage (if set) will be covered by the autoSlippage and the API will calculate and return auto slippage recommendations based on current market data.
+maxAutoSlippage	String	No	When autoSlippage is set to true, this value is the maximum auto slippage returned by the API. We recommend that users adopt this value to ensure risk control.
+referrerAddress	String	No	Legacy Referrer address for fromtoken commission.For SOL commission using wallet address and SPL token commissions using token account.
+Recommend to use the newfromTokenReferrerWalletAddress parameter
+When using the API, you need to configure the commission ratio using feePercent.
+Each transaction can only choose commission from either the fromToken or the toToken.
+
+Note:
+1. For EVM chains: Transactions involving wrapped pairs, such as ETH and WETH, are not supported here.
+2. For Solana chain: The commission address must have some SOL deposited in advance for activation.
+toTokenReferrerAddress	String	No	Legacy Referrer address for toToken commission (Only supports SPL Token commissions which use token account.)
+Recommend to use the new toTokenReferrerWalletAddress parameter
+When using the API, you need to configure the commission ratio using feePercent.
+Each transaction can only choose commission from either the fromToken or the toToken.
+
+Note:
+1. For EVM chains: Transactions involving wrapped pairs, such as ETH and WETH, are not supported here.
+2. For Solana chain: The commission address must have some SOL deposited in advance for activation.
+Response param#
+Parameter	Type	Description
+routerResult	Object	Quote path data
+chainId	String	Chain ID (e.g., 1 for Ethereum. See Chain IDs)
+fromTokenAmount	String	The input amount of a token to be sold ( e.g.,500000000000000000000000)
+toTokenAmount	String	The resulting amount of a token to be bought ( e.g.,168611907733361)
+tradeFee	String	Estimated network fee (USD) of the quote route
+estimateGasFee	String	Estimated gas consumption is returned in the smallest units of each chain, such as wei.
+dexRouterList	Array	Quote path data set
+router	String	One of the main paths for the token swap
+routerPercent	String	The percentage of assets handled by the main path (e.g.,5)
+subRouterList	Array	Quote path sub data set
+dexProtocol	Array	Liquidity protocols used on the main path
+dexName	String	The name of the liquidity protocol (e.g.,Verse)
+percent	String	The percentage of assets handled by the protocol (e.g.,100)
+fromToken	Object	The information of a token to be sold
+tokenContractAddress	String	Token contract address (e.g.,0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)
+tokenSymbol	String	Token symbol (e.g.,USDC)
+tokenUnitPrice	String	The token unit price returned by this interface is a general USD price based on data from on-chain, exchange, and other third-party sources. Note: This price is only a recommended price. For some special cases, the token unit price may be 'null'
+decimal	String	The decimal number defines the smallest unit into which a single currency token can be divided. For example, if the decimal number of a token is 8, it means that a single such token can be divided into 100,000,000 of its smallest units. Note: This parameter is for reference only. It may change due to reasons such as settings adjustments by the contract owner.
+isHoneyPot	Boolean	If the token is a honeypot token. yes：true no：false
+taxRate	String	Token tax rate for selling: Applicable to tokens with configurable tax mechanisms (e.g., SafeMoon, SPL2022 tokens). Returns 0 for regular tokens without tax. The value ranges from 0 to 1, where 0.01 represents 1%.
+toToken	Object	The information of a token to be bought
+tokenContractAddress	String	Token contract address (e.g.,0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)
+tokenSymbol	String	Token symbol (e.g.,USDC)
+tokenUnitPrice	String	The token unit price returned by this interface is a general USD price based on data from on-chain, exchange, and other third-party sources. Note: This price is only a recommended price. For some special cases, the token unit price may be 'null'
+decimal	String	The decimal number defines the smallest unit into which a single currency token can be divided. For example, if the decimal number of a token is 8, it means that a single such token can be divided into 100,000,000 of its smallest units. Note: This parameter is for reference only. It may change due to reasons such as settings adjustments by the contract owner.
+isHoneyPot	Boolean	If the token is a honeypot token. yes：true no：false
+taxRate	String	Token tax rate for buying: Applicable to tokens with configurable tax mechanisms (e.g., SafeMoon, SPL2022 tokens). Returns 0 for regular tokens without tax. The value ranges from 0 to 1, where 0.01 represents 1%.
+quoteCompareList	Array	Comparison of quote routes
+dexName	String	DEX name of the quote route
+dexLogo	String	DEX logo of the quote route
+tradeFee	String	Estimated network fee (USD) of the quote route
+receiveAmount	String	Received amount of the quote route
+priceImpactPercentage	String	Percentage = (Received value – Paid value) / Paid value. The swap amount will affect the depth of the liquidity pool, causing a value difference. This percentage can be positive if the received value exceeds the paid value.
+tx	Object	contract data model
+signatureData	Array	If this parameter is returned, it indicates that the transaction requires additional signing data. Developers should use this parameter as one of the inputs for the transaction signature and ensure it is correctly applied during the signing process.
+from	String	User's wallet address (e.g.,0x3f6a3f57569358a512ccc0e513f171516b0fd42a)
+gas	String	estimated amount of the gas limit, increase this value by 50% (e.g.,1173250)
+gasPrice	String	Gas price in wei (e.g.,58270000000)
+maxPriorityFeePerGas	String	EIP-1559: Recommended priority cost of gas per unit (e.g.,500000000)
+to	String	The contract address of OKX DEX router (e.g.,0x3b3ae790Df4F312e745D270119c6052904FB6790)
+value	String	The amount of native tokens (in wei) that will be sent to the contract address (e.g.,0)
+minReceiveAmount	String	The minimum amount of a token to buy when the price reaches the upper limit of slippage (e.g.,900645839798)
+data	String	Call data
+slippage	String	The value of current transaction slippage
+
+
+Request example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/dex/aggregator/swap?chainId=1&amount=10000000000000&toTokenAddress=0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48&fromTokenAddress=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee&slippage=0.05&userWalletAddress=0x6f9ffea7370310cd0f890dfde5e0e061059dcfb8' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+Response example#
+200
+{
+        "code": "0",
+        "data": [
+      {
+        "routerResult": {
+        "chainId": "1",
+        "dexRouterList": [
+      {
+        "router": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee--0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "routerPercent": "100",
+        "subRouterList": [
+      {
+        "dexProtocol": [
+      {
+        "dexName": "Uniswap V3",
+        "percent": "100"
+      }
+        ],
+        "fromToken": {
+        "decimal": "18",
+        "isHoneyPot": false,
+        "taxRate": "0",
+        "tokenContractAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "tokenSymbol": "WETH",
+        "tokenUnitPrice": "3342.87"
+      },
+        "toToken": {
+        "decimal": "6",
+        "isHoneyPot": false,
+        "taxRate": "0",
+        "tokenContractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "tokenSymbol": "USDC",
+        "tokenUnitPrice": "0.9995"
+      }
+      }
+        ]
+      }
+        ],
+        "estimateGasFee": "135000",
+        "fromToken": {
+        "decimal": "18",
+        "isHoneyPot": false,
+        "taxRate": "0",
+        "tokenContractAddress": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+        "tokenSymbol": "ETH",
+        "tokenUnitPrice": "3342.87"
+      },
+        "fromTokenAmount": "10000000000000",
+        "priceImpactPct": "0.001",
+        "quoteCompareList": [
+      {
+        "amountOut": "32990",
+        "dexLogo": "https://static.okx.com/cdn/wallet/logo/balancer.png",
+        "dexName": "Balancer V1",
+        "tradeFee": "44.32919149271585462"
+      },
+      {
+        "amountOut": "334",
+        "dexLogo": "https://static.okx.com/cdn/wallet/logo/DODO.png",
+        "dexName": "DODO",
+        "tradeFee": "36.96825563599181972"
+      },
+      {
+        "amountOut": "33023",
+        "dexLogo": "https://static.okx.com/cdn/wallet/logo/balancer.png",
+        "dexName": "Balancer V2",
+        "tradeFee": "19.79273863696907162"
+      },
+      {
+        "amountOut": "32980",
+        "dexLogo": "https://static.okx.com/cdn/explorer/dex/logo/Dex_Sushiswap_V3.png",
+        "dexName": "Sushiswap V3",
+        "tradeFee": "15.70332982767794112"
+      },
+      {
+        "amountOut": "32964",
+        "dexLogo": "https://static.okx.com/cdn/wallet/logo/SHIB.png",
+        "dexName": "ShibaSwap",
+        "tradeFee": "15.70332982767794112"
+      }
+        ],
+        "toToken": {
+        "decimal": "6",
+        "isHoneyPot": false,
+        "taxRate": "0",
+        "tokenContractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "tokenSymbol": "USDC",
+        "tokenUnitPrice": "0.9995"
+      },
+        "toTokenAmount": "33474",
+        "tradeFee": "4.3491690602723664"
+      },
+        "tx": {
+        "data": "0x0d5f0e3b00000000000000000001881f6f9ffea7370310cd0f890dfde5e0e061059dcfb8000000000000000000000000000000000000000000000000000009184e72a0000000000000000000000000000000000000000000000000000000000000007c3800000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000001800000000000000000000000e0554a476a092703abdb3ef35c80e0d76d32939f",
+        "from": "0x6f9ffea7370310cd0f890dfde5e0e061059dcfb8",
+        "gas": "202500",
+        "gasPrice": "32657616776",
+        "maxPriorityFeePerGas": "2086453233",
+        "minReceiveAmount": "31800",
+        "signatureData": [
+        ""
+        ],
+        "to": "0x7D0CcAa3Fac1e5A943c5168b6CEd828691b46B36",
+        "value": "10000000000000"
+      }
+      }
+        ],
+        "msg": ""
+      }

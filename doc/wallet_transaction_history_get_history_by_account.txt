@@ -1,0 +1,122 @@
+Get History by Account#
+Query all or specific chain transaction history under the account dimension, sorted in descending chronological order.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/post-transaction/transactions
+
+Request Parameters#
+Parameter	Type	Required	Description
+accountId	String	Yes	Unique identifier for the account
+chainIndex	String	No	Unique identifier for the chain, e.g. ETH=3
+tokenAddress	String	No	Token contract address; if empty, query addresses with main chain currency balance;if not pass, query all
+begin	String	No	Start time, queries transactions after this time. Unix timestamp, in milliseconds
+end	String	No	End time, queries transactions before this time. If both begin and end are not provided, queries transactions before the current time. Unix timestamp, in milliseconds
+cursor	String	No	Cursor
+limit	String	No	Number of records to return, defaults to the most recent 20 records, up to a maximum of 20 records
+Response Parameters#
+Parameter	Type	Description
+transactionList	Array	List of transactions
+>chainIndex	String	Chain ID
+>txHash	String	Transaction hash
+>iType	String	EVM transaction layer type
+0: External main chain coin transfer
+1: Contract internal main chain coin transfer
+2: Token transfer
+>methodId	String	Method
+>nonce	String	The number of transactions initiated by the sender address
+>txTime	String	Transaction time; Unix timestamp in milliseconds, e.g., 1597026383085
+>from	Array	Transaction inputs
+>>address	String	Sender/input address, separated by commas for multi-signature transactions
+>>amount	String	Input amount
+>to	Array	Transaction outputs
+>>address	String	Receiver/output address, separated by commas for multi-signature transactions
+>>amount	String	Output amount
+>tokenAddress	String	Token contract address
+>amount	String	Transaction amount
+>symbol	String	Currency symbol for the transaction amount
+>txFee	String	Transaction fee
+>txStatus	String	Transaction status; success, fail, pending, etc.
+>hitBlacklist	Boolean	false: not in blacklist true: in blacklist
+>tag	String	Blacklist tag type, including types like phishing, network phishing, and contract vulnerabilities.Deprecated
+cursor	String	Cursor
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/post-transaction/transactions?accountId=31f55853-d430-42c5-b4c6-710d39848cd1' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z' \
+
+Response Example
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "cursor": "1724212391",
+            "transactions": [
+                {
+                    "chainIndex": "0",
+                    "txHash": "5fd7e21515b088e2c47641779d53de4ff3b982c7d71a5e85f06f32d8cd4c5bcc",
+                    "methodId": "",
+                    "nonce": "",
+                    "txTime": "1724250342000",
+                    "from": [
+                        {
+                            "address": "bc1pm7fxkgcrqghf2rtxdw4hupvdpqkped7azyrh2mukedrw2p0cj3hsxt8ph3"
+                            "amount": "0.000432"
+                        }
+                    ],
+                    "to": [
+                        {
+                            "address": "bc1pm7fxkgcrqghf2rtxdw4hupvdpqkped7azyrh2mukedrw2p0cj3hsxt8ph3"
+                            "amount": "0.00010"
+                        },
+                        {
+                            "address": "bc1pm7fxkgcrqghf2rtxdw4hupvdpqkped7azyrh2mukedrw2p0cj3hsxt8ph3"
+                            "amount": "0.00032738"
+                        }
+                    ],
+                    "tokenAddress": "",
+                    "amount": "",
+                    "symbol": "BTC",
+                    "txFee": "0.00000462",
+                    "txStatus": "success",
+                    "hitBlacklist": false,
+                    "tag": "",
+                    "iType": ""
+                },
+                {
+                     "chainIndex": "1",
+                     "txHash": "0x307ced97491fdeea9acb141cb3d07939ef3291f28c06c0cacd1cc1f8c435bbe1",
+                     "methodId": "",
+                     "nonce": "945",
+                     "txTime": "1724056787000",
+                     "from": [
+                         {
+                            "address": "0x50c476a139aab23fdaf9bca12614cdd54a4244e4"
+                            "amount": ""
+                         }
+                     ],
+                     "to": [
+                         {
+                            "address": "0x2491889438e5130a4cf629fbc93ae31aad742d8b"
+                            "amount": ""
+                         }
+                    ],
+                    "tokenAddress": "",
+                    "amount": "0.00001",
+                    "symbol": "ETH",
+                    "txFee": "1.89E-23",
+                    "txStatus": "success",
+                    "hitBlacklist": false,
+                    "tag": "",
+                    "iType": "0"
+                }
+            ]
+        }
+    ]
+}

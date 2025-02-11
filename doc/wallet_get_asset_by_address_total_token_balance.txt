@@ -1,0 +1,461 @@
+Total Token Balances#
+Retrieve the list of token balances for an address across multiple chains or specified chains. The balance query supports:
+
+Chain native tokens
+ERC20 tokens on EVM chains
+BRC-20, ARC-20, Runes, and SRC-20 tokens in the Bitcoin ecosystem
+Fractal Bitcoin chain's BRC-20 tokens
+Additionally, this interface supports filtering out risky airdrop tokens.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/asset/all-token-balances-by-address
+
+Request Parameters#
+Parameter	Type	Required	Description
+address	String	Yes	Address
+chains	Array	Yes	When filtering the chains for querying asset details, multiple chains should be separated by commas (,). A maximum of 50 chains is supported.
+filter	String	No	0: Filter out risk airdrop tokens
+1: Do not filter
+Default is to filter.
+Response Parameters#
+Parameter	Type	Description
+tokenAssets	Array	List of token balances
+>chainIndex	String	Unique identifier for the chain
+>tokenAddress	String	Contract address
+>address	String	Address
+>symbol	String	Token symbol
+>balance	String	Token balance
+>rawBalance	String	Raw balance of token address. More chains will be supported soon. For unsupported chains, this field is empty.
+>tokenPrice	String	Token unit value, priced in USD
+>tokenType	String	Token type:
+1: token
+2: inscription
+>transferAmount	String	The balance of BRC-20, FBRC-20, and other inscription assets that can be directly transferred or traded, commonly referred to as the transferable balance.
+>availableAmount	String	The amount of BRC-20, FBRC-20, and other inscription assets that need to complete the inscription process before they can be traded or transferred, usually referred to as the available balance or pending inscription balance.
+>isRiskToken	Boolean	true: flagged as a risk airdrop token
+false: not flagged
+
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/asset/all-token-balances-by-address?address=0xEd0C6079229E2d407672a117c22b62064f4a4312&chains=1&filter=1' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+Response Example
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "tokenAssets": [
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x386ae941d4262b0ee96354499df2ab8442734ec0",
+                    "symbol": "PT-sUSDE-27FEB2025",
+                    "balance": "47042180.520700015",
+                    "tokenPrice": "0.968391562089677097",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+                    "symbol": "wstETH",
+                    "balance": "7565.892480395067",
+                    "tokenPrice": "4321.611627695311",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+                    "symbol": "WBTC",
+                    "balance": "329.10055205",
+                    "tokenPrice": "98847.8",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x23878914efe38d27c4d67ab83ed1b93a74d4086a",
+                    "symbol": "aEthUSDT",
+                    "balance": "30057379.938443",
+                    "tokenPrice": "0.99978",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x657e8c867d8b37dcc18fa4caead9c45eb088c642",
+                    "symbol": "eBTC",
+                    "balance": "271.94970471",
+                    "tokenPrice": "99094.345321371",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x4d5f47fa6a74757f35c14fd3a6ef8e3c9bc514e8",
+                    "symbol": "aEthWETH",
+                    "balance": "6080.001975381972",
+                    "tokenPrice": "3634.32",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xe00bd3df25fb187d6abbb620b3dfd19839947b81",
+                    "symbol": "PT-sUSDE-27MAR2025",
+                    "balance": "19016580.895408865",
+                    "tokenPrice": "0.952031186961110727",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xa17581a9e3356d9a858b789d68b4d866e593ae94",
+                    "symbol": "cWETHv3",
+                    "balance": "3000.000734740809",
+                    "tokenPrice": "3663.74",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x9d39a5de30e57443bff2a8307a4256c8797a3497",
+                    "symbol": "sUSDe",
+                    "balance": "4863500.628333919",
+                    "tokenPrice": "1.144688569528375454",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xec5a52c685cc3ad79a6a347abace330d69e0b1ed",
+                    "symbol": "PT-LBTC-27MAR2025",
+                    "balance": "46.02912324",
+                    "tokenPrice": "97165.169717785655331396",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x8236a87084f8b84306f72007f36f2618a5634494",
+                    "symbol": "LBTC",
+                    "balance": "38.09998",
+                    "tokenPrice": "99187.19184268864",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xbeef047a543e45807105e51a8bbefcc5950fcfba",
+                    "symbol": "steakUSDT",
+                    "balance": "482651.8612595832",
+                    "tokenPrice": "1.063",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x4c9edd5852cd905f086c759e8383e09bff1e68b3",
+                    "symbol": "USDe",
+                    "balance": "69564",
+                    "tokenPrice": "0.99977",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x8be3460a480c80728a8c4d7a5d5303c85ba7b3b9",
+                    "symbol": "sENA",
+                    "balance": "42294.989425",
+                    "tokenPrice": "1.19",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "",
+                    "symbol": "ETH",
+                    "balance": "8.135546539084933",
+                    "tokenPrice": "3638.63",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xbf5495efe5db9ce00f80364c8b423567e58d2110",
+                    "symbol": "ezETH",
+                    "balance": "5.270854886240325",
+                    "tokenPrice": "3763.152404188635320082",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
+                    "symbol": "DAI",
+                    "balance": "1196.2693184870445",
+                    "tokenPrice": "1.0002",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+                    "symbol": "COMP",
+                    "balance": "0.007643",
+                    "tokenPrice": "84.43345772756197",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x9abfc0f085c82ec1be31d30843965fcc63053ffe",
+                    "symbol": "Q*",
+                    "balance": "900",
+                    "tokenPrice": "0.000419255747329174",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xa1290d69c65a6fe4df752f95823fae25cb99e5a7",
+                    "symbol": "rsETH",
+                    "balance": "0.00007090104120006",
+                    "tokenPrice": "3765.640772858747921444",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x56015bbe3c01fe05bc30a8a9a9fd9a88917e7db3",
+                    "symbol": "CAT",
+                    "balance": "0.42",
+                    "tokenPrice": "0.06242994543936436",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xec53bf9167f50cdeb3ae105f56099aaab9061f83",
+                    "symbol": "EIGEN",
+                    "balance": "0.002496149915967488",
+                    "tokenPrice": "4.018538365202288",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x58d97b57bb95320f9a05dc918aef65434969c2b2",
+                    "symbol": "MORPHO",
+                    "balance": "0.001409373661132556",
+                    "tokenPrice": "3.3568669630371337",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6",
+                    "symbol": "STG",
+                    "balance": "0.000009547670354338",
+                    "tokenPrice": "0.49707759500034454",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xba3335588d9403515223f109edc4eb7269a9ab5d",
+                    "symbol": "GEAR",
+                    "balance": "0.000009005734110189",
+                    "tokenPrice": "0.012329598382413718",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x35fa164735182de50811e8e2e824cfb9b6118ac2",
+                    "symbol": "eETH",
+                    "balance": "0.000000000000000001",
+                    "tokenPrice": "3637.93",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xae7ab96520de3a18e5e111b5eaab095312d7fe84",
+                    "symbol": "stETH",
+                    "balance": "0.000000000000000001",
+                    "tokenPrice": "3637.93",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xa3931d71877c0e7a3148cb7eb4463524fec27fbd",
+                    "symbol": "sUSDS",
+                    "balance": "67435907.43236613",
+                    "tokenPrice": "0",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xa8705a14c79fa1cded70875510211fec822b3c30",
+                    "symbol": "BEEX",
+                    "balance": "5000000",
+                    "tokenPrice": "0",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0xabc0abace9fb9625fcefbedc423e8f94225bd251",
+                    "symbol": "TANUKI",
+                    "balance": "3548102.746002181",
+                    "tokenPrice": "0",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                },
+                {
+                    "chainIndex": "1",
+                    "tokenAddress": "0x356b8d89c1e1239cbbb9de4815c39a1474d5ba7d",
+                    "symbol": "syrupUSDT",
+                    "balance": "1750000",
+                    "tokenPrice": "0",
+                    "tokenType": "1",
+                    "isRiskToken": false,
+                    "transferAmount": "0",
+                    "availableAmount": "0",
+                    "rawBalance": "",
+                    "address": "0xed0c6079229e2d407672a117c22b62064f4a4312"
+                }
+            ]
+        }
+    ]
+}

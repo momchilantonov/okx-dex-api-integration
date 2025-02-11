@@ -1,0 +1,43 @@
+Transaction Broadcast#
+Broadcast transactions to the specified blockchain.
+
+Request Path#
+POST https://www.okx.com/api/v5/wallet/pre-transaction/broadcast-transaction
+
+Request Parameters#
+Parameter	Type	Required	Description
+signedTx	String	Yes	The transaction string after being signed
+chainIndex	String	Yes	Unique identifier for the chain, e.g., ETH=3. For more details, see the chain index list
+address	String	Yes	Address.
+accountId	String	No	Wallet account ID. It can be used later to check the transactions sent from the account
+Response Parameters#
+Parameter	Type	Description
+orderId	String	Unique transaction identifier
+
+
+Request Example#
+shell
+curl --location --request POST 'https://www.okx.com/api/v5/wallet/pre-transaction/broadcast-transaction' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z' \
+--data-raw '{
+    "signedTx":"0x08b47112567534ad041bbc6fa102394773c6d8f6d634320773af4da55efa",
+    "accountId":"44486e05-3235-2f8e-5fe2-a8ab46217863",
+    "address": "0x383c8208b4711256753b70729ba0cf0cda55efad",
+    "chainIndex": "3",
+}'
+Response Example#
+200
+{
+    "code": "0",
+    "data": [
+        {
+            "orderId": "0x383c8208b4711256753b70729ba0cf0cda55efad"
+        }
+    ],
+    "msg": ""
+}

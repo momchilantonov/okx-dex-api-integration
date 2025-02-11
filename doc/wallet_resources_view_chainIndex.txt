@@ -1,0 +1,69 @@
+View chainIndex#
+Note
+chainIndex: A custom identifier defined by the Wallet API service, which may differ slightly from the chainId of EIP-155.
+
+EIP-155 chainId: The chainId specified in EIP-155
+. You can check detailed chainId information through this link
+.
+No.	Network Name	chainIndex	Supported
+1	BTC	0	Supported
+2	Ethereum	1	Supported
+3	Litecoin	2	Supported
+4	Dogecoin	3	Supported
+5	Dash	5	Supported
+6	Optimism	10	Supported
+7	Flare	14	Supported
+8	Cronos	25	Supported
+9	BNB Smart Chain	56	Supported
+10	Ethereum Classic	61	Supported
+11	OKTC	66	Supported
+12	Gnosis	100	Supported
+13	Polygon	137	Supported
+14	Bitcoin Cash	145	Supported
+15	Manta Pacific	169	Supported
+16	Tron	195	Supported
+17	X layer	196	Supported
+18	opBNB	204	Supported
+19	B^2 network	223	Supported
+20	Fantom	250	Supported
+21	Kroma	255	Supported
+22	KCC	321	Supported
+23	zkSync Era	324	Supported
+24	PulseChain	369	Supported
+25	Omega Network	408	Supported
+26	Endurance	648	Supported
+27	Conflux	1030	Supported
+28	Metis	1088	Supported
+29	Polygon zkEVM	1101	Supported
+30	Core	1116	Supported
+31	Moonbeam	1284	Supported
+32	Moonriver	1285	Supported
+33	Ronin	2020	Supported
+34	Rangers	2025	Supported
+35	Kava EVM	2222	Supported
+36	Merlin Chain	4200	Supported
+37	Mantle	5000	Supported
+38	Base	8453	Supported
+39	Immutable zkEVM	13371	Supported
+40	MODE_ETH	34443	Supported
+41	Arbitrum One	42161	Supported
+42	Arbitrum Nova	42170	Supported
+43	Celo	42220	Supported
+44	Avalanche C	43114	Supported
+45	Linea	59144	Supported
+46	Kaia network (Klaytn)	8217	Supported
+47	Blast	81457	Supported
+48	Chilizi	88888	Not Supported
+49	EthereumPoW	10001	Supported
+50	TAIKO_ETH	167000	Supported
+51	BITLAYER_BTC	200901	Supported
+52	Ethereum Fair(DIS chain)	513100	Supported
+53	BOB_ETH	60808	Supported
+54	Scroll	534352	Supported
+55	Sepolia	11155111	Supported
+56	Fractal Bitcoin Mainnet	70000061	Supported
+57	Solana	501	Supported
+58	SUI	784	Supported
+59	Gravity	1625	Supported
+60	Wemix	1111	Supported
+61	Lumi	94168	Supported

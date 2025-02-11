@@ -1,0 +1,94 @@
+Token Index Price#
+The index Price refers to a currency price calculated from the prices of multiple third-party data sources.
+
+Batch query for in de token prices.
+
+Supports index prices for native token and other tokens.
+
+Supports index prices for inscription tokens on the Bitcoin chain such as BRC-20, Runes, ARC-20, and SRC-20.
+
+Supports index prices for BRC-20 inscription tokens on the Fractal Bitcoin chain.
+
+Maximum 100 token prices can be queried per request.Request parameters should be passed in the form of an array.
+
+Request Path#
+POST https://www.okx.com/api/v5/wallet/token/current-price
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainIndex	String	Yes	Unique identifier of the blockchain
+tokenAddress	String	Yes	Token address.
+1: Pass an empty string "" to query the native token of the corresponding chain.
+2: Pass the specific token contract address to query the corresponding token.
+3: Different inscription tokens are passed in the following formats:
+FBRC-20: Use fbtc_fbrc20_name, such as fbtc_fbrc20_babymusk
+BRC-20: Use btc-brc20-tick(name), such as btc-brc20-ordi
+Runes: Use btc-runesMain-tickId, such as btc-runesMain-840000:2
+SRC-20: Use btc-src20-name, such as btc-src20-utxo
+Response Parameters#
+Parameter	Type	Description
+price	String	Token price
+time	String	Timestamp of the price, Unix timestamp in milliseconds
+chainIndex	String	Unique identifier of the blockchain
+tokenaddress	String	Token address.
+
+Request Example#
+shell
+curl --location --request POST 'https://www.okx.com/api/v5/wallet/token/current-price' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z' \
+--data-raw '[
+        {
+            "chainIndex": "1",
+            "tokenAddress":"0xdac17f958d2ee523a2206206994597c13d831ec7"
+        },
+        {
+            "chainIndex":"1",
+            "tokenAddress": "0xdac17f955d2ee523a2206206994597c13d831ein"
+        },
+        {
+            "chainIndex": "0",
+            "tokenAddress": "btc-arc20-00009b954c9f1358de9c089f95ec420132e4106a89c8fbb3cfda198ae1e5f9d5i0"
+        },
+        {
+            "chainIndex": "0",
+            "tokenAddress": "btc-runesMain-840000:2"
+        }
+    ]'
+Response Example#
+200
+{
+
+    "code": 0,
+    "msg": "success",
+    "data": [
+        {
+            "chainIndex": "1",
+            "tokenAddress": "0xc18360217d8f7ab5e7c516566761ea12ce7f9d72"
+            "time": "1716892020000",
+            "price": "26.458143090226812",
+        },
+        {
+            "chainIndex": "0",
+            "tokenAddress": "btc-brc20-ordi",
+            "time": "1724147119541",
+            "price": "32.430139864000000000"
+        },
+        {
+            "chainIndex": "0",
+            "tokenAddress": "btc-arc20-00009b954c9f1358de9c089f95ec420132e4106a89c8fbb3cfda198ae1e5f9d5i0",
+            "time": "1724153703045",
+            "price": "0.003558564230000000"
+        },
+        {
+            "chainIndex": "0",
+            "tokenAddress": "btc-runesMain-840000:2",
+            "time": "1724145196000",
+            "price": "0.000455104500000000"
+        }
+    ]
+}

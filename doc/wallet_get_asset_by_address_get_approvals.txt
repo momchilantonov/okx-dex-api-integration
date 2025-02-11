@@ -1,0 +1,79 @@
+Get Approvals#
+Retrieve details of which projects a single address has approved. Includes approved assets and amounts for each project.
+
+Request Path#
+Get https://www.okx.com/api/v5/wallet/security/approvals
+
+Request Parameters#
+Parameter	Type	Required	Description
+addresses	Array	Yes	List of addresses, up to 20
+>chainIndex	String	Yes	Unique identifier of the blockchain
+>address	String	Yes	Address information
+limit	String	No	Number of records per query, default is 50, max is 100
+cursor	String	No	Cursor position, default is the first
+Response Parameters#
+Parameter	Type	Description
+chainIndex	String	Unique identifier of the blockchain
+cursor	String	Cursor
+approvalProjects	Array	List of authorized projects
+>projectName	String	Project name
+>projectIcon	String	Project icon URL
+>approveAddress	String	Approved project address
+>tokens	Array	List of authorized tokens for the project
+>coinId	String	Coin identifier
+>imageUrl	String	Token logo URL
+>symbol	Array	Token symbol
+>status	String	Approval status:
+1: Success
+2: Pending cancellation
+3: Pending approval
+>tokenAddress	String	Token contract address
+>approvalNum	String	Approved amount, specific authorization amount = approvalNum / 10 ^ precision
+
+
+Request Example
+curl --location --request POST 'https://www.okx.com/api/v5/wallet/security/approvals' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z' \
+--data-raw '{
+    addresses:[
+        {
+            "chainIndex":"0",
+            "address":"3HyNd5YsqxyuieicbpKGfV2nBXgMn41dSd",
+        }
+    ],
+    "limit": "10",
+    "cursor": "1"
+}'
+
+Response Example
+{
+    "code": "0",
+    "msg": "",
+    "data": [
+        {
+            "cursor":"100",
+            "chainIndex": "1",
+            "approvalProjects": [
+                {
+                    "projectIcon": "https://static.oklink.com/cdn/explorer/defi/uniswapv2.png",
+                    "projectName": "Uniswap",
+                    "approvalAddress": "0x2c34a2fb1d0b4f55de51e1d0bdefaddce6b7cdd6",
+                    "tokens": [
+                        {
+                            "approvalNum": "2744484",
+                            "imageUrl": "https://static.coinall.ltd/cdn/wallet/logo/tusd.png",
+                            "symbol": "TUSD",
+                            "status": "1",
+                            "tokenAddress": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

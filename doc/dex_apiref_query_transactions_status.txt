@@ -1,0 +1,79 @@
+Query Transaction Status#
+Query the final transaction status of a single-chain swap using txhash.
+
+Request URL#
+GET https://www.okx.com/api/v5/dex/aggregator/history
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainId	String	Yes	Chain ID (e.g., 1: Ethereum, see Chain ID List)
+hash	String	Yes	Transaction hash for a swap initiated via OKX DEX API
+isFromMyProject	Boolean	No	Set true to check if the transaction is under the current API Key. Set false or omit to query any OKX DEX API transaction.
+Response Parameters#
+Parameter	Type	Description
+chainId	String	Unique identifier of the chain (e.g., 1: Ethereum, see Chain ID List).
+txHash	String	Transaction hash.
+height	String	Block height where the transaction occurred.
+txTime	String	Transaction time in Unix timestamp (milliseconds).
+status	String	Transaction status: PENDING (In Progress), SUCCESS (Success), FAILURE (Failure).
+txType	String	Transaction action: Approve, Wrap, Unwrap, Swap.
+fromAddress	String	Sender's address.
+dexRouter	String	Interaction address.
+toAddress	String	Receiver's address.
+fromTokenDetails	Array	Details of the token being swapped.
+>symbol	String	Symbol of the token being swapped.
+>amount	String	Swap amount in the smallest unit (e.g., wei for Ethereum).
+>tokenAddress	String	Contract address of the token being swapped (e.g., 0xEeeeeEeeeEeEee...).
+toTokenDetails	Array	Details of the token received in the swap.
+>symbol	String	Symbol of the token received.
+>amount	String	Amount received in the smallest unit.
+>tokenAddress	String	Contract address of the received token (e.g., 0xa0b86991c6218b36...).
+referalAmount	String	Referral fee amount.
+errorMsg	String	Error message.
+gasLimit	String	Gas limit for the transaction.
+gasUsed	String	Gas used in the transaction, in the smallest unit (e.g., wei).
+gasPrice	String	Gas price in the smallest unit (e.g., wei).
+txFee	String	Transaction fee, in the main chain currency.
+
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/dex/aggregator/history?chainId=784&txHash=5GePcvqEakoUtArW8PHULDSQds95vcgeiTznvbnb8hCV' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+Response example#
+200
+{
+    "code": "0",
+    "data": {
+        "chainId": "784",
+        "dexRouter": "0x51159f25f262ae01e87532b673de3b38df8f0ecc2dc0581f1033df6b84b84955",
+        "errorMsg": "",
+        "fromAddress": "0x4b9df646075d8621e2578f14818427e4c708709744ea3b827136056f85f88da7",
+        "fromTokenDetails": {
+            "amount": "892919000000.000",
+            "symbol": "HIPPO",
+            "tokenAddress": "0x8993129d72e733985f7f1a00396cbd055bad6f817fee36576ce483c8bbb8b87b::sudeng::SUDENG"
+        },
+        "gasLimit": "",
+        "gasPrice": "",
+        "gasUsed": "",
+        "height": "99502953",
+        "referralAmount": "892919000",
+        "status": "success",
+        "toAddress": "0x4b9df646075d8621e2578f14818427e4c708709744ea3b827136056f85f88da7",
+        "toTokenDetails": {
+            "amount": "1532443840.00000000",
+            "symbol": "SUI",
+            "tokenAddress": "0x2::sui::SUI"
+        },
+        "txFee": "7976416",
+        "txHash": "5GePcvqEakoUtArW8PHULDSQds95vcgeiTznvbnb8hCV",
+        "txTime": "1736390263909",
+        "txType": "swap"
+    },
+    "msg": ""
+}

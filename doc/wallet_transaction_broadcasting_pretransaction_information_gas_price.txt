@@ -1,0 +1,85 @@
+Gas Price#
+Dynamically obtain estimated gas prices for various chains, supporting EIP-1559, and covering EVM and UTXO model networks.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/pre-transaction/gas-price
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainIndex	String	Yes	Unique identifier for the chain
+Response Parameters#
+EVM#
+Parameter	Type	Description
+>normal	String	Medium gas price, in wei
+>min	String	Low gas price, in wei
+>max	String	High gas price, in wei
+>supporteip1559	Boolean	Whether supports 1559
+>eip1559Protocol	Object	1559 protocol
+eip1559 Protocol
+Parameter	Type	Description
+eip1559Protocol	Object	Structure of 1559 protocol
+>suggestBaseFee	String	Suggested base fee = base fee * 1.25, in wei
+>baseFee	String	Base fee, in wei
+>proposePriorityFee	String	Medium priority fee, in wei
+>safePriorityFee	String	Low priority fee, in wei
+>fastPriorityFee	String	High priority fee, in wei
+BRC-20/UTXO#
+Parameter	Type	Description
+normalFeeRate	String	Medium fee rate
+maxFeeRate	String	High fee rate
+minFeeRate	Object	Low fee rate
+inscriptionOutput	String	Inscription output size
+minOutput	String	Minimum inscription output size, in Satoshi (usually 546 Satoshi)
+normalCost	String	Single inscription transaction cost, in Satoshi
+maxCost	String	Maximum single inscription transaction cost, in Satoshi
+minCost	String	Minimum single inscription transaction cost, in Satoshi
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/pre-transaction/gas-price?chainIndex=1' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+
+Response Example
+// EVM
+{
+    "code": "0",
+    "data": [
+        {
+            "normal" : "21289500000", // Medium gas price
+            "min" : "15670000000",    // Low gas price
+            "max" : "29149000000",    // High gas price
+            "supportEip1559" : true,  // Whether supports 1559
+            "erc1599Protocol": {
+                "suggestBaseFee" : "15170000000", // Suggested base fee
+                "baseFee" : "15170000000",        // Base fee
+                "proposePriorityFee" : "810000000", // Medium priority fee
+                "safePriorityFee" : "500000000",    // Low priority fee
+                "fastPriorityFee" : "3360000000"    // High priority fee
+            }
+       }
+    ],
+    "msg": ""
+}
+
+// UTXO
+{
+    "code": "0",
+    "data": [
+        {
+          "normalFeeRate": "27",
+          "maxFeeRate": "35",
+          "minFeeRate": "22",
+          "inscriptionOutput": "546",
+          "minOutput": "1500",
+          "normalCost": "1800",
+          "maxCost": "3600",
+          "minCost": "600"
+        }
+    ],
+    "msg": ""
+}

@@ -1,0 +1,73 @@
+Adding Fees#
+The OKX DEX API supports configuring referral fees and fee-receiving addresses for token swaps
+
+You can extend the implementation to include fee parameters in your swap quotes and charge up to 3% per swap from your users.
+
+The OKX DEX API plans to take a certain percentage of the referral fee charged by you to your users. Currently the OKX DEX API charges no fees.
+
+Note
+Ton chain currently does not support commission splitting.
+// Extended quoteParams with fee support
+const quoteParams = {
+    chainId: SOLANA_CHAIN_ID,
+    amount: rawAmount,
+    fromTokenAddress,
+    toTokenAddress,
+    slippage: "0.5",
+    userWalletAddress: userAddress,
+    // Fee-related parameters
+    fromTokenReferrerWalletAddress: "Your_REFERRER_WALLET_ADDRESS", // Optional: Referrer address for commissions based on fromToken
+    toTokenReferrerWalletAddress: "REFERRER_WALLET", // Optional: Referrer address for commissions based on toToken
+    feePercent: "1.5",  // Optional: Commission percentage (0-3%, max 2 decimal points)
+
+} as Record<string, string>;
+Important Fee Configuration Notes:
+
+The feePercent parameter must be between 0 and 3%
+Maximum 2 decimal points are supported for feePercent E.g. 1.326% is the actual input, but the final calculation will only adopt 1.32%
+For Solana , the commission address must have some SOL deposited for activation
+Each transaction can only choose commission from either the fromToken or the toToken
+Example Usage with Fees:
+
+// .. Previous code implementation
+    // Get swap quote
+    const quoteParams = {
+        chainId: SOLANA_CHAIN_ID,
+        amount: rawAmount,
+        fromTokenAddress,
+        toTokenAddress,
+        slippage: "0.5",
+        userWalletAddress: userAddress,
+
+        // Additional Fee params
+        fromTokenReferrerWalletAddress: "fee-recipient-wallet-address",
+        feePercent: "1",
+
+        // The wallet addresses to receive the commission fee (Each transaction can only choose commission from either the fromToken or the toToken)
+        // toTokenReferrerWalletAddress: "fee-recipient-wallet-address",
+        // fromTokenReferrerWalletAddress: "fee-recipient-wallet-address",
+
+    } as Record<string, string>;
+
+    const timestamp = new Date().toISOString();
+    const requestPath = "/api/v5/dex/aggregator/swap";
+    const queryString = "?" + new URLSearchParams(quoteParams).toString();
+    const headers = getHeaders(timestamp, "GET", requestPath, queryString);
+
+    const response = await fetch(
+        `https://www.okx.com${requestPath}${queryString}`,
+        { method: "GET", headers }
+    );
+
+    const data = await response.json();
+
+    // .. Continue code implementation
+Command Line Usage with Fees:
+
+# Example: Swap .01 SOL to USDC with 1.5% fee to referrer
+npx ts-node swap.ts .01 11111111111111111111111111111111 EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v --referrer YOUR_REFERRER_ADDRESS --fee 1.5
+Fee Calculation Example: For a trade of 100 USDC with a 1.5% fee:
+
+Fee amount: 1.5 USDC (1.5% of 100 USDC)
+Actual swap amount: 98.5 USDC
+The fee (1.5 USDC) will be sent to the referrer address

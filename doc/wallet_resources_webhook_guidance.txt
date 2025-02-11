@@ -1,0 +1,114 @@
+Webhook Guidance#
+Webhooks allow you to send POST requests to a specific URL every time a specified event type is triggered. You can enable this feature when you subscribe to data. Add the correct URL for your application, and once the specified event type is triggered, we will send a POST request with the specified event type message in the request body.
+
+The content type of the message is "application/json".
+
+Important Security Statement
+When configuring Webhooks, ensure that the request parameters do not contain sensitive information such as login credentials or passwords. Transmitting sensitive data through Webhooks may expose it to unauthorized parties and cause security vulnerabilities. Always use secure, authenticated endpoints and encrypt sensitive data to protect your information.
+Please note, we only accept URLs with port numbers 80 and 443. Requests to URLs with any other port numbers will be rejected. If the remote server does not return a 200 status code, we will start retrying.
+Retry Count
+The delay between each retry will increase. After the initial attempt, we will make up to 7 additional attempts. The retry intervals are as follows: 1, 5, 10, 30, 60, 120, 240 minutes.
+
+Idempotence
+The webhook callback function implemented by you needs to support idempotence.
+
+Pause Notifications
+Notifications will be paused when any of the following conditions occur:
+
+At least 100 notification failures within a week.
+At least 500 notification failures over the entire lifecycle.
+Also note that IPv6 currently cannot be used with Webhooks, but we may implement this in the future.
+
+Subscribe#
+// Define your parameters
+const postSubscribeParams = {
+    chainIndex: '3',
+    url: 'http://your.server.com/webhook',
+    type: 'transaction',
+  };
+
+// Define helper function
+const postSubscribetData = async () => {
+    const apiRequestUrl = getRequestUrl(
+      apiBaseUrl,
+      '/api/v5/waas/wallet/webhook/subscribe',
+      postSubscribeParams
+    );
+    return fetch(apiRequestUrl, {
+      method: 'post',
+      headers: headersParams,
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        return res;
+      });
+  };
+
+const { data: subscribeData } = await postSubscribetData();
+For more information, see Webhook
+
+Receive Callback Messages#
+To receive callback information, you need to set up a service to respond to HTTP POST requests.
+
+For quick testing, you can use the third-party site webhook.site
+. It provides many tools and allows you to easily inspect, test, and automate any incoming HTTPS requests or emails directly in a web browser.
+
+When you first visit webhook.site, you will see the following information, which you can use to complete the test.
+
+https://webhook.site/#!/e7a56c2f-61d8-4c56-bb0f-6fa3f4ddedc5
+
+Callback Message Specification
+
+When the message type is a transaction
+{
+        "chainIndex": "3",
+        "blockHeight": "110637354",
+        "blockHash": "0xc9c865d75d3018cde8b5bfc691491c2da4f4d08ed4f926cf1b44ffbc6b0351a0",
+        "blockTime": "1689214654000",
+        "orderId": "12345",
+        "input": "0x12345698554",
+        "vin": [
+                    {
+                      "addr": "bc1p077evnzjv9w697a523jxvhyyt0aptmgunkk2a8wsppy3mty7gj7q9j6azc",
+                      "number": "0",
+                      "txHash": "3aead5cb471bf2d30b6c2bc9961a579a91ad0a7562800356e6c29f9c5b05a964",
+                      "amount": "2990241",
+                      "vout": "1"
+                    }
+                ],
+        "vout": [
+                    {
+                      "addr": "",
+                      "addrInVin": false,
+                      "number": "0",
+                      "amount": "0"
+                    },
+                    {
+                      "addr": "bc1p6eu0hkl3jy449wrm52exssure7a8083dcsfkydh02c4vyrs2y83shdcmsy",
+                      "addrInVin": false,
+                      "number": "1",
+                      "amount": "330"
+                    }
+                ],
+        "fee": "21351600000000",
+        "fromAddr": "0x80c67432656d59144ceff962e8faf8926599bcf8",
+        "fromAmount": "202484827205115828530",
+        "gasLimit": "429723",
+        "gasPrice": "100000000",
+        "gasUsed": "213516",
+        "txHash": "0xc9c59a01a0bddcca4e2365c2283967c78e7b4742dce93df182361c0ed593c80f",
+        "iType": "0",
+        "logIndex": "-1",
+        "nonce": "831889",
+        "status": "1",
+        "symbol": "ARBITRUM",
+        "toAddr": "0x56ba2193dd79f0eeeda77df04f5060e714e38029",
+        "value": "1101146000000000003"
+}
+When the message type is a block
+[{
+        "blockHeight": "8455400",
+        "blockTime": "1689216050",
+        "blockHash": "0xda14230da73a0ea116b1d693a9cbfaaf241eb08be25bb190a588faff7841773d",
+        "preBlockHash": "0xb4bdbad327065225a44fddac74bac9f6345d3b87c651876adafc0f18ec4f41e5"
+}]

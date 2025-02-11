@@ -1,0 +1,38 @@
+Nonce#
+Supports querying Nonce on EVM chains, returning the nonce that is about to be confirmed on-chain and the pending nonce in the memory pool.
+
+For example, if the highest confirmed nonce for the current address is 10, and the memory pool has nonce 11 and 12 pending, the returned nonce would be 11, and pendingNonce would be 13.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/pre-transaction/nonce
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainIndex	String	Yes	Unique identifier for the chain
+address	String	Yes	Address
+Response Parameters#
+Parameter	Type	Description
+nonce	String	Nonce available for on-chain confirmation
+pendingNonce	String	Pending nonce in the memory pool
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/pre-transaction/nonce?chainIndex=1&address=0x1ucda' \
+--header 'Content-Type: application/json' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+Response Example#
+200
+{
+    "code": "0",
+    "data": [
+        {
+            "nonce": "15"，
+            "pendingNonce": "21"
+        }
+    ],
+    "msg": "success"
+}

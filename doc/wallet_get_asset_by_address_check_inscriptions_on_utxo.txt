@@ -1,0 +1,66 @@
+Check Inscriptions on UTXO#
+Query the quantity and detailed information of Runes, BRC-20, ARC-20, and Ordinals NFT assets on a specific UTXO on the Bitcoin chain.
+
+Query the quantity and detailed information of BRC-20 assets on a specific UTXO on the Fractal Bitcoin chain.
+
+Request Path#
+GET https://www.okx.com/api/v5/wallet/utxo/utxo-detail
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainIndex	String	Yes	Unique identifier for the chain
+txHash	String	Yes	Transaction hash corresponding to the UTXO
+voutIndex	String	Yes	Identifies which output position the UTXO is in; together with txHash, uniquely maps to a specific UTXO
+Response Parameters#
+Parameter	Type	Description
+address	String	Address
+txhash	String	Transaction hash corresponding to the UTXO
+voutIndex	String	Identifies which output position the UTXO is in; together with txhash, uniquely maps to a specific UTXO
+unresolved	Array	Lists protocols that have not completed block parsing, making it uncertain if the UTXO contains corresponding assets
+utxoStatus	String	UTXO Status
+pending: Pending
+confirmed: Confirmed
+Not found : Not found
+btcAssets	Array	Detailed inscription assets on the current UTXO, with a maximum of 1,000 entries per asset
+>protocol	String	Protocol type
+1:BRC-20
+2:ARC-20
+3:Runes
+4:ordi_nft
+>tokenAmount	String	The quantity of transferable token assets on the UTXO
+>eventType	String	The specific transaction event for BRC-20
+>decimal	String	Precision; returns empty if not available
+>symbol	String	Token name; returns empty if not available
+>inscriptionNumber	String	On-chain minting number inscriptions_number
+>nftId	String	Unique identifier of the NFT, txhash+i+0, applicable only for Ordinals protocol (i.e., BRC-20 and Ordinals NFT assets)
+>nftOffset	String	NFT location offset, indicating where the inscription is positioned on the UTXO, applicable only for Ordinals protocol (i.e., BRC-20 and Ordinals NFT assets)
+
+
+Response Example
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "addresses": [
+                "bc1p8qfrmxdlmynr076uu28vlszxavwujwe7dus0r8y9thrnp5lgfh6qu2ctrr"
+            ],
+            "txHash": "cd7b77b068142ee1b099a360aeb287b5e02d4603a4523cb12d18cbd58aa47985",
+            "voutIndex": "0",
+            "utxoStatus":"confirmed" ,
+            "unresolved": [],
+            "btcAssets": [
+                {
+                    "protocol": "4",
+                    "tokenAmount": "",
+                    "eventType": "",
+                    "decimal": "0",
+                    "symbol": "",
+                    "inscriptionNumber": "11896131",
+                    "nftId": "0b7c063d14d73cdb83e3454643fc1e4a3701bd5dc2f9550e5ab303247a68f7cai0",
+                    "nftOffset": "0"
+                }
+            ]
+        }
+    ]
+}

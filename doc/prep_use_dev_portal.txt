@@ -1,0 +1,41 @@
+Use the developer portal#
+In order to be more efficient in building your own applications, this article will cover the features of the developer management platform and the best ways to use it
+
+Create project#
+Use the Developer portal to get started#
+Step 1：Create/log in to your account#
+Click on the 'developer portal' under the navigation bar developer center
+
+Click Connect Wallet to create or log in to an account.
+
+Select the wallet you want to connect to. OKX Wallet is recommended for connection.
+
+After selecting the wallet, click Verify, a window will pop up at the wallet. Click Signature in your wallet.
+
+Congrats! You have successfully created an account and are logged into the developer management platform.
+
+Step 2：Create a new project#
+To create a new project, just enter the project name and project description (optional), then click the Confirm button to create a new project.
+After creating a new project, you can see the details of the project under the Project option.
+If you want to create another project, click Create a new project.
+Generate API keys#
+Prepared knowledge#
+API key：Provides a unique identifier for the application or user to interact with the API.
+
+Secret Key：Works with API keys to provide additional security by adding a security token.
+
+Passphrase：Used to encrypt Secret keys on the OKX OS server to provide additional security. Passphrase is also used to view Secret keys and modify API information.
+
+Generate a new API key#
+Click the Manage button in the project where you want to create the API key.
+
+Click the Create API key button.
+
+Enter the name of API key and Passphrase, click Create to generate the corresponding API key.
+
+Passphrase is required to use the API. Once the Passphrase is lost, the API key will no longer be available. Remember the passphrase.
+
+Congrats! You have successfully created the API key.
+
+View the Secret Key#
+When making a request to the API, you need to also provide the Secret Key. Click the Copy button on the right to view your Secret Key.

@@ -1,0 +1,36 @@
+Total Value#
+Get the total balance of all tokens and DeFi assets under the specified address, with support for filtering out risk airdrop tokens.
+
+Request URL#
+GET https://www.okx.com/api/v5/wallet/asset/total-value-by-address
+
+Request Parameters#
+Parameter	Type	Required	Description
+address	String	Yes	Get the total valuation for the address
+chains	String	Yes	Query the total balance of the multiple chains, which can be separated by ",". Supports up to 50 chains
+assetType	String	No	Type of asset to query, defaults to total balance of all assets. 0: Query total balance of all assets, including tokens and DeFi assets; 1: Query only token balance; 2: Query only DeFi balance
+excludeRiskToken	Boolean	No	Option to filter out potentially risky airdrop tokens. Defaults to filtering. true: filter, false: do not filter
+Response Parameters#
+Parameter	Type	Description
+totalValue	String	Returns the total asset balance based on the query asset type, expressed in USD
+
+
+Request Example#
+shell
+curl --location --request GET 'https://www.okx.com/api/v5/wallet/asset/total-value-by-address?address=0x0b32aa5c1e71715206fe29b7badb21ad95f272c0&chains=1&assetType=0' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+Response Example#
+200
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "totalValue": "172.895057177065864522056725546579939398"
+        }
+    ]
+}

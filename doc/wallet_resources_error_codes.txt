@@ -1,0 +1,26 @@
+Error Codes#
+The current error codes and messages returned by the Wallet API are as follows. You can refer to the list for more details.
+
+Error Code	HTTP Status Code	Message
+50001	200	Service temporarily unavailable, try again
+50026	500	System busy, try again later
+81104	200	Blockchain not supported
+81105	200	Wallet verification error
+81106	200	Address must be in lowercase
+81107	200	Too many wallet addresses
+81108	200	Wallet type mismatch
+81109	200	Address update error
+81150	200	Chain not supported in this interface
+81151	200	Token address incorrect
+81152	200	Token does not exist
+81153	200	This token is a platform token, no need to add
+81157	200	Blockchain and address do not match
+81158	200	Token protocol not supported
+81159	200	Data caching, please try again later
+81201	200	Transaction not found
+81202	200	Transaction still pending
+81203	200	Transaction extjson parameters not found
+81302	200	FromAddress does not belong to the account ID
+81351	200	Insufficient balance to pay
+81353	200	Address is illegal
+81451	200	Node return failed

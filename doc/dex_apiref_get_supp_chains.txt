@@ -1,0 +1,38 @@
+Get Supported Chains#
+Retrieve information on chains supported for single-chain exchanges. The request returns supported target chains for cross-chain transactions.
+
+Request URL#
+GET https://www.okx.com/api/v5/dex/aggregator/supported/chain
+
+Request Parameters#
+Parameter	Type	Required	Description
+chainId	String	No	Unique identifier for the chain.
+If left empty ````, the response will return all supported chain information.
+If a specific chain ID is provided, information for that chain will be returned, e.g., 1: Ethereum. See more here.
+Response Parameters#
+Parameter	Type	Description
+chainId	String	Unique identifier for the chain (e.g., 1: Ethereum; see more here).
+chainName	String	Chain name (e.g., Optimism).
+dexTokenApproveAddress	String	DEX authorization contract address; if no authorization has been made, this field will be empty.
+
+
+Request:
+curl --location --request GET 'https://www.okx.com/api/v5/dex/aggregator/supported/chain?chainId=1' \
+--header 'OK-ACCESS-PROJECT: 86af********d1bc' \
+--header 'OK-ACCESS-KEY: 37c541a1-****-****-****-10fe7a038418' \
+--header 'OK-ACCESS-SIGN: leaV********3uw=' \
+--header 'OK-ACCESS-PASSPHRASE: 1****6' \
+--header 'OK-ACCESS-TIMESTAMP: 2023-10-18T12:21:41.274Z'
+
+Response:
+{
+    "code":"0",
+    "data":[
+          {
+            "chainId":"1",
+            "chainName":"Ethereum",
+            "dexTokenApproveAddress": "0x40aA958dd87FC8305b97f2BA922CDdCa374bcD7f"
+          },
+    ],
+    "msg":""
+  }
