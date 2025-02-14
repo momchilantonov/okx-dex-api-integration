@@ -1,0 +1,8 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/pre-transaction/validate-address",
+  "params": {
+    "chainIndex": "1",
+    "address": "0x886233b0718ca1ff3ff58575e3e295bb9dd23779"
+  }
+}

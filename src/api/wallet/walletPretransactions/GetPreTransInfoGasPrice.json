@@ -1,0 +1,7 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/pre-transaction/gas-price",
+  "params": {
+    "chainIndex": "1"
+  }
+}

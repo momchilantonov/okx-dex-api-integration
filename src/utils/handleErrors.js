@@ -32,8 +32,8 @@ const ERROR_CODES = {
     "200	Detected honeypot tokens or high-risk tokens with a 100% buy/sell tax. Transactions have been intercepted",
 };
 
-function getErrorCode(code) {
+function handleErrors(code) {
   return ERROR_CODES[code] || "Unknown error";
 }
 
-module.exports = { getErrorCode, ERROR_CODES };
+module.exports = { getErrorCode: handleErrors, ERROR_CODES };

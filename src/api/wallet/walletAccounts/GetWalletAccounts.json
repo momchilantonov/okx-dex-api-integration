@@ -1,0 +1,7 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/account/accounts",
+  "params": {
+    "limit": "50"
+  }
+}

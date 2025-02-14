@@ -1,0 +1,17 @@
+{
+  "method": "POST",
+  "endpoint": "/api/v5/wallet/asset/token-balances",
+  "params": {
+    "accountId": "017bbeb1-55b1-47a1-a833-a09baaa1f77f",
+    "tokenAddresses": [
+      {
+        "chainIndex": "1",
+        "tokenAddress": ""
+      },
+      {
+        "chainIndex": "1",
+        "tokenAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      }
+    ]
+  }
+}

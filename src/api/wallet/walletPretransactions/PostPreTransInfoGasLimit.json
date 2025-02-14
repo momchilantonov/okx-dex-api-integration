@@ -1,0 +1,9 @@
+{
+  "method": "POST",
+  "endpoint": "/api/v5/wallet/pre-transaction/gas-limit",
+  "params": {
+    "chainIndex": "1",
+    "fromAddr": "0x57e114b691db790c35207b2e685d4a43181e6061",
+    "toAddr": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  }
+}

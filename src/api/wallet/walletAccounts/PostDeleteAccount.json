@@ -1,0 +1,7 @@
+{
+  "method": "POST",
+  "endpoint": "/api/v5/wallet/account/delete-account",
+  "params": {
+    "addresses": { "accountId": "db812af6-8fe3-4215-9190-a0fb17635fb4" }
+  }
+}

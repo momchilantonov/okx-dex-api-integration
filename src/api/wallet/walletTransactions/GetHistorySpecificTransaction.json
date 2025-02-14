@@ -1,0 +1,9 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/post-transaction/transaction-detail-by-txhash",
+  "params": {
+    "chainIndex": "1",
+    "txHash": "0x388b433548159ae402658cf59427f9dd49af1b0f6297f1d8df28c7f2ca7739cd",
+    "iType": "0"
+  }
+}

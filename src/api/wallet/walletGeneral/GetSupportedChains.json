@@ -1,0 +1,5 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/chain/supported-chains",
+  "params": {}
+}

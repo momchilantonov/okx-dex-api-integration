@@ -1,0 +1,9 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/asset/wallet-all-token-balances",
+  "params": {
+    "accountId": "017bbeb1-55b1-47a1-a833-a09baaa1f77f",
+    "chains": "1",
+    "filter": "0"
+  }
+}

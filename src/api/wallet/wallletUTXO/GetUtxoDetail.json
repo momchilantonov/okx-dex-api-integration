@@ -1,0 +1,9 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/utxo/utxo-detail",
+  "params": {
+    "chainIndex": "0",
+    "txHash": "cd7b77b068142ee1b099a360aeb287b5e02d4603a4523cb12d18cbd58aa47985",
+    "voutIndex": "0"
+  }
+}

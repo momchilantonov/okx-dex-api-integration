@@ -1,0 +1,10 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/asset/total-value-by-address",
+  "params": {
+    "address": "0x0b32aa5c1e71715206fe29b7badb21ad95f272c0",
+    "chains": "1",
+    "assetType": "0",
+    "excludeRiskToken": "true"
+  }
+}

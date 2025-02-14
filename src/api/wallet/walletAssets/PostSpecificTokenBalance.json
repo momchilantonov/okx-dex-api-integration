@@ -1,0 +1,14 @@
+{
+  "method": "POST",
+  "endpoint": "/api/v5/wallet/asset/token-balances-by-address",
+  "params": {
+    "address": "0x50c476a139aab23fdaf9bca12614cdd54a4244e3",
+    "tokenAddresses": [
+      {
+        "chainIndex": "1",
+        "tokenAddress": ""
+      }
+    ],
+    "filter": "0"
+  }
+}

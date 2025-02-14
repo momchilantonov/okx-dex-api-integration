@@ -1,0 +1,8 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/token/token-detail",
+  "params": {
+    "chainIndex": "1",
+    "tokenAddress": "0x6982508145454ce325ddbe47a25d4ec3d2311933"
+  }
+}

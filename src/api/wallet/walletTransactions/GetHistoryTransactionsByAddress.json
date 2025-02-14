@@ -1,0 +1,9 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/post-transaction/transactions-by-address",
+  "params": {
+    "address": "0x886233b0718ca1ff3ff58575e3e295bb9dd23779",
+    "chains": "1",
+    "limit": "20"
+  }
+}

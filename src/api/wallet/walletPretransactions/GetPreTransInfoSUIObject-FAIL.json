@@ -1,0 +1,9 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/pre-transaction/sui-object",
+  "params": {
+    "chainIndex": "501",
+    "address": "0x886233b0718ca1ff3ff58575e3e295bb9dd23779",
+    "tokenAddress": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  }
+}

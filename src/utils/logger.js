@@ -22,7 +22,7 @@ const logger = {
       console.log("\n✅ Response:", {
         timestamp: new Date().toISOString(),
         endpoint,
-        data,
+        data: JSON.stringify(data, null, 2),
       });
     }
   },

@@ -1,0 +1,12 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/token/historical-price",
+  "params": {
+    "chainIndex": "1",
+    "tokenAddress": "",
+    "limit": "10",
+    "period": "1H",
+    "begin": "1707717600000",
+    "end": "1707804000000"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "method": "GET",
+  "endpoint": "/api/v5/wallet/utxo/utxos",
+  "params": {
+    "chainIndex": "0",
+    "address": "bc1p8qfrmxdlmynr076uu28vlszxavwujwe7dus0r8y9thrnp5lgfh6qu2ctrr",
+    "limit": "50",
+    "cursor": "1"
+  }
+}

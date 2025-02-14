@@ -1,0 +1,14 @@
+{
+  "method": "POST",
+  "endpoint": "/api/v5/wallet/account/update-wallet-account",
+  "params": {
+    "accountId": "017bbeb1-55b1-47a1-a833-a09baaa1f77f",
+    "updateType": "add",
+    "addresses": [
+      {
+        "chainIndex": "501",
+        "address": "4hW3EP5QHbuAxRjJ1QJhG4WLjSDbFKaLEtpzbzVN4GAw"
+      }
+    ]
+  }
+}

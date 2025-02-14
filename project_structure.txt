@@ -1,0 +1,34 @@
+src/
+├── api
+│   ├── dex
+│   └── wallet
+│       ├── configGetHistoricalPrice.json
+│       ├── configGetSupportedChains.json
+│       ├── configPostTokenIndexPrice.json
+│       └── configPostTokenRealTimePrice.json
+├── auth
+│   └── signature.js
+├── config
+│   ├── config.js
+│   └── web3.js
+├── scripts
+│   ├── requestsHandler.js
+│   └── sendRequest.js
+├── services
+│   └── priceData.js
+└── utils
+    ├── addFeeParams.js
+    ├── getHmacSign.js
+    ├── getPreHash.js
+    ├── getRequestHeaders.js
+    ├── getRequestHostname.js
+    ├── getRequestOptions.js
+    ├── getRequestUrlPath.js
+    ├── getRouterAddress.js
+    ├── handleErrors.js
+    ├── logger.js
+    ├── parseRequestConfig.js
+    ├── timeConverter.js
+    └── validateTtimeframe.js
+
+8 directories, 23 files
